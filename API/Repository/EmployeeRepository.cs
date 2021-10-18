@@ -31,7 +31,9 @@ namespace API.Repository
 
         public Employee Get(string NIK)
         {
-            throw new NotImplementedException();
+            var entity = context.Employees.Find(NIK);
+            return entity;
+
         }
 
         public int Insert(Employee employee)
