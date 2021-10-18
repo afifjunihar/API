@@ -14,14 +14,14 @@ namespace API.Models
     {
         [Key]
         public string NIK{ get; set; }
-        public string firstName { get; set; }
-        public string lastName { get; set; }
-        public string salary { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int Salary { get; set; }
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
-        public string email { get; set; }
+        public string Email { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public Gender gender { get; set; }
+        public Gender Gender { get; set; }
 
     }
     public enum Gender
