@@ -1,7 +1,5 @@
-﻿using API.Context;
-using API.Models;
+﻿using API.Models;
 using API.Repository;
-using API.Repository.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,39 +11,48 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
-
         private readonly EmployeeRepository employeeRepository;
-        public EmployeeController(EmployeeRepository employeeRepository)
+        public EmployeesController(EmployeeRepository employeeRepository)
         {
             this.employeeRepository = employeeRepository;
         }
 
         [HttpPost]
-        public ActionResult Insert(Employee employee)
+        public ActionResult Post(Employee employee)
         {
             employeeRepository.Insert(employee);
+
             return Ok();
         }
 
-        //public ActionResult Update(Employee employee)
-        //{
-        //    employeeRepository.Update(employee);
-        //    return Ok();
-        //}
 
-        //public ActionResult Delete(Employee NIK)
-        //{
+        [HttpGet]
+        public ActionResult Get()
+        {
+            return Ok(employeeRepository.Get());
+        }
 
-        //    employeeRepository.Delete(Convert.ToString(NIK));
-        //    return Ok();
-        //}
+        [HttpGet("{NIK}")]
+        public ActionResult Get(string NIK)
+        {
+            return Ok(employeeRepository.Get(NIK));
+        }
 
-        //public ActionResult Get()
-        //{
-        //    return Get();
-        //}
+        [HttpDelete("{NIK}")]
+        public ActionResult Delete(string NIK)
+        {
+            employeeRepository.Delete(NIK);
+            Console.WriteLine();
+            return Ok($"Berhasil Menghapus data {NIK}");
+        }
+
+        [HttpPut]
+        public ActionResult Update(Employee employee)
+        {
+            employeeRepository.Update(employee);
+            return Ok("Data berhasil diubah");
+        }
     }
-
 }
