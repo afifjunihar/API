@@ -16,7 +16,7 @@ namespace API.Models
         public string NIK{ get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
-        public string salary { get; set; }
+        public int salary { get; set; }
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
         public string email { get; set; }
