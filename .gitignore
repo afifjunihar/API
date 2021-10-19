@@ -1,2 +1,13 @@
 
 .vs/API/v16/.suo
+.vs/API/config/applicationhost.config
+API/appsettings.json
+API/bin/Debug/netcoreapp3.0/API.dll
+*.pdb
+*.json
+*.props
+*.cache
+API/obj/Debug/netcoreapp3.0/API.csproj.FileListAbsolute.txt
+*.dll
+API/obj/Debug/netcoreapp3.0/API.GeneratedMSBuildEditorConfig.editorconfig
+*.cache
