@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(Employee employee)
         {
-            if(employeeRepository.Get(employee.NIK) != null)
+            if (employeeRepository.Get(employee.NIK) != null)
             {
                 return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, NIK sudah terdata di database" });
             }
@@ -32,7 +32,7 @@ namespace API.Controllers
                 employeeRepository.Insert(employee);
                 return Ok(new { status = HttpStatusCode.OK, message = "Data berhasil diinput kedalam database", employee });
             }
-            
+
         }
 
 
@@ -81,12 +81,13 @@ namespace API.Controllers
         [HttpPut]
         public ActionResult Update(Employee employee)
         {
-            if (employee.NIK == employeeRepository.Get(employee.NIK).NIK )
+            try
             {
                 employeeRepository.Update(employee);
                 return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil mengubah data {employee.NIK}" });
+
             }
-            else
+            catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
                 return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
             }
