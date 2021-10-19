@@ -81,7 +81,7 @@ namespace API.Controllers
         [HttpPut]
         public ActionResult Update(Employee employee)
         {
-            if (employee.NIK == employeeRepository.Get(employee.NIK).NIK )
+            if (null != employeeRepository.Get(employee.NIK).NIK )
             {
                 employeeRepository.Update(employee);
                 return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil mengubah data {employee.NIK}" });
