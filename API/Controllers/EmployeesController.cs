@@ -118,39 +118,36 @@ namespace API.Controllers
             {
                 return BadRequest(new { status = HttpStatusCode.OK, message = "Data Gagal Diubah" });
             }
-   
-            if (employee.FirstName == null)
+            else 
             {
-                employee.FirstName = employeeRepository.Get(employee.NIK).FirstName;
+                if (employee.FirstName == null)
+                {
+                    employee.FirstName = employeeRepository.Get(employee.NIK).FirstName;
+                }
+                if (employee.LastName == null)
+                {
+                    employee.LastName = employeeRepository.Get(employee.NIK).LastName;
+                }
+                if (employee.Email == null)
+                {
+                    employee.Email = employeeRepository.Get(employee.NIK).Email;
+                }
+                if (employee.Salary == 0)
+                {
+                    employee.Salary = employeeRepository.Get(employee.NIK).Salary;
+                }
+                if (employee.Phone == null)
+                {
+                    employee.Phone = employeeRepository.Get(employee.NIK).Phone;
+                }
+                if (employee.BirthDate == DateTime.MinValue)
+                {
+                    employee.BirthDate = employeeRepository.Get(employee.NIK).BirthDate;
+                }
+                employeeRepository.Update(employee);
+                return Ok(new { status = HttpStatusCode.OK, message = "berhasil mengubah data" });
             }
 
-            if (employee.LastName == null)
-            {
-                employee.LastName = employeeRepository.Get(employee.NIK).LastName;
-            }
-
-            if (employee.Email == null)
-            {
-                employee.Email = employeeRepository.Get(employee.NIK).Email;
-            }
-
-            if (employee.Salary == 0)
-            {
-                employee.Salary = employeeRepository.Get(employee.NIK).Salary;
-            }
-
-            if (employee.Phone == null)
-            {
-                employee.Phone = employeeRepository.Get(employee.NIK).Phone;              
-            }
-
-            if (employee.BirthDate == DateTime.MinValue)
-            {
-                employee.BirthDate = employeeRepository.Get(employee.NIK).BirthDate;
-            }
-                
-            employeeRepository.Update(employee);
-            return Ok(new { status = HttpStatusCode.OK, message = "berhasil mengubah data" });
         }
     }
 }
