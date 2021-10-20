@@ -2,6 +2,7 @@
 using API.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,18 +24,33 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(Employee employee)
         {
-            if (employeeRepository.Get(employee.NIK) != null)
+            string NIK = employee.NIK;
+            var resultAll = employeeRepository.Get();
+            if (employeeRepository.Get(NIK) != null)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, NIK sudah terdata di database" });
+                return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, NIK sudah terdata di Database" });
             }
             else
             {
+                foreach (var item in resultAll)
+                {
+                    if (item.Email == employee.Email)
+                    {
+                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, email sudah terdata di Database" });
+                    }
+                    else if (item.Phone == employee.Phone)
+                    {
+                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, nomor telepon sudah terdata di Database" });
+                    }
+                    else if (item.Phone == employee.Phone && item.Email == employee.Email)
+                    {
+                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, No. Telefon dan Email sudah terdata di Database" });
+                    }
+                }
                 employeeRepository.Insert(employee);
-                return Ok(new { status = HttpStatusCode.OK, message = "Data berhasil diinput kedalam database", employee });
+                return Ok(new { StatusCode = HttpStatusCode.OK, message = "Data Berhasil dimasukan ke Dabase" });
             }
-
         }
-
 
         [HttpGet]
         public ActionResult Get()
@@ -42,7 +58,7 @@ namespace API.Controllers
             var result = employeeRepository.Get();
             if (result.Count() == 0)
             {
-                return Ok(new {status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
+                return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
             }
             else
             {
@@ -53,13 +69,14 @@ namespace API.Controllers
         [HttpGet("{NIK}")]
         public ActionResult Get(string NIK)
         {
+            var Message = employeeRepository.Get(NIK);
             if (employeeRepository.Get(NIK) == null)
             {
                 return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
             }
             else
             {
-                return Ok(employeeRepository.Get(NIK));
+                return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil ditemukan", Message });
             }
         }
 
@@ -81,16 +98,60 @@ namespace API.Controllers
         [HttpPut]
         public ActionResult Update(Employee employee)
         {
+
             try
             {
                 employeeRepository.Update(employee);
                 return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil mengubah data {employee.NIK}" });
-
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException)
             {
                 return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
             }
         }
+
+     
+        [HttpPatch("{NIK}")]
+        public ActionResult UpdatePatch(string NIK, Employee employee) 
+        {
+            if (NIK != employeeRepository.Get(employee.NIK).NIK)
+            {
+                return BadRequest(new { status = HttpStatusCode.OK, message = "Data Gagal Diubah" });
+            }
+   
+            if (employee.FirstName == null)
+            {
+                employee.FirstName = employeeRepository.Get(employee.NIK).FirstName;
+            }
+
+            if (employee.LastName == null)
+            {
+                employee.LastName = employeeRepository.Get(employee.NIK).LastName;
+            }
+
+            if (employee.Email == null)
+            {
+                employee.Email = employeeRepository.Get(employee.NIK).Email;
+            }
+
+            if (employee.Salary == 0)
+            {
+                employee.Salary = employeeRepository.Get(employee.NIK).Salary;
+            }
+
+            if (employee.Phone == null)
+            {
+                employee.Phone = employeeRepository.Get(employee.NIK).Phone;              
+            }
+
+            if (employee.BirthDate == DateTime.MinValue)
+            {
+                employee.BirthDate = employeeRepository.Get(employee.NIK).BirthDate;
+            }
+                
+            employeeRepository.Update(employee);
+            return Ok(new { status = HttpStatusCode.OK, message = "berhasil mengubah data" });
+        }
     }
 }
+

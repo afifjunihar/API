@@ -33,7 +33,9 @@ namespace API.Repository
         public Employee Get(string NIK)
         {
             var entity = context.Employees.Find(NIK);
-            return entity;
+            var result = entity;
+            context.Entry(entity).State = EntityState.Detached;
+            return result;
 
         }
 
@@ -47,7 +49,7 @@ namespace API.Repository
         public int Update(Employee employee)
         {
             context.Entry(employee).State = EntityState.Modified;
-            var result = context.SaveChanges();
+            var result = context.SaveChanges();           
             return result;
         }
     }
