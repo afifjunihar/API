@@ -24,32 +24,19 @@ namespace API.Controllers
         [HttpPost]
         public ActionResult Post(Employee employee)
         {
-            string NIK = employee.NIK;
-            var resultAll = employeeRepository.Get();
-            if (employeeRepository.Get(NIK) != null)
+            int result = employeeRepository.Insert(employee);
+            switch (result)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, NIK sudah terdata di Database" });
+                case 0:
+                    return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil menambah data {employee.NIK}" });
+                case 1:
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, NIK sudah terdaftar" });
+                case 2:
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, email sudah terdaftar" });
+                case 3:
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, nomor telpon sudah terdaftar" });
             }
-            else
-            {
-                foreach (var item in resultAll)
-                {
-                    if (item.Email == employee.Email)
-                    {
-                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, email sudah terdata di Database" });
-                    }
-                    else if (item.Phone == employee.Phone)
-                    {
-                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, nomor telepon sudah terdata di Database" });
-                    }
-                    else if (item.Phone == employee.Phone && item.Email == employee.Email)
-                    {
-                        return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, No. Telefon dan Email sudah terdata di Database" });
-                    }
-                }
-                employeeRepository.Insert(employee);
-                return Ok(new { StatusCode = HttpStatusCode.OK, message = "Data Berhasil dimasukan ke Dabase" });
-            }
+            return Ok();
         }
 
         [HttpGet]
@@ -110,15 +97,15 @@ namespace API.Controllers
             }
         }
 
-     
+
         [HttpPatch("{NIK}")]
-        public ActionResult UpdatePatch(string NIK, Employee employee) 
+        public ActionResult UpdatePatch(string NIK, Employee employee)
         {
             if (NIK != employeeRepository.Get(employee.NIK).NIK || employeeRepository.Get(employee.NIK) == null)
             {
                 return BadRequest(new { status = HttpStatusCode.OK, message = "Data Gagal Diubah" });
             }
-            else 
+            else
             {
 
                 if (employee.FirstName == null)
@@ -133,7 +120,7 @@ namespace API.Controllers
                 {
                     employee.Email = employeeRepository.Get(employee.NIK).Email;
                 }
-                else 
+                else
                 {
                     foreach (var item in employeeRepository.Get())
                     {
@@ -157,7 +144,7 @@ namespace API.Controllers
                 {
                     employee.Phone = employeeRepository.Get(employee.NIK).Phone;
                 }
-                else 
+                else
                 {
                     foreach (var item in employeeRepository.Get())
                     {
@@ -178,4 +165,3 @@ namespace API.Controllers
         }
     }
 }
-
