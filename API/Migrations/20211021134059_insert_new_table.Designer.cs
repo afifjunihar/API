@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20211021134059_insert_new_table")]
+    partial class insert_new_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,7 +53,7 @@ namespace API.Migrations
                     b.Property<string>("UniversityId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UniversityId1")
+                    b.Property<int?>("UniversityId1")
                         .HasColumnType("int");
 
                     b.HasKey("EducationId");
@@ -140,9 +142,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.University", "University")
                         .WithMany("Education")
-                        .HasForeignKey("UniversityId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UniversityId1");
 
                     b.Navigation("University");
                 });

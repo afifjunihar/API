@@ -23,6 +23,8 @@ namespace API.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public Gender Gender { get; set; }
 
+        public Account Account { get; set; }
+
     }
     public enum Gender
     {
