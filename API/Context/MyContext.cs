@@ -9,10 +9,29 @@ namespace API.Context
 {
     public class MyContext : DbContext
     {
-        public MyContext(DbContextOptions<MyContext> options) : base(options) 
+        public MyContext(DbContextOptions<MyContext> options) : base(options)
         {
-        
+
         }
+
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Employee>()
+                .HasOne(a => a.Account)
+                .WithOne(b => b.Employee)
+                .HasForeignKey<Account>(b => b.NIK);
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Profiling)
+                .WithOne(b => b.Account)
+                .HasForeignKey<Profiling>(b => b.NIK);
+            modelBuilder.Entity<Education>()
+                .HasMany(c => c.Profilings)
+                .WithOne(e => e.Education);
+            modelBuilder.Entity<University>()
+                .HasMany(c => c.Educations)
+                .WithOne(e => e.University);
+        }
     }
 }

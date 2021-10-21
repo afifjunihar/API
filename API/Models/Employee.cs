@@ -22,6 +22,7 @@ namespace API.Models
         public string Email { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public Gender Gender { get; set; }
+        public Account Account { get; set; }
 
     }
     public enum Gender

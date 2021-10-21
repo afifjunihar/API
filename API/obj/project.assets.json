@@ -5833,19 +5833,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Abby\\.nuget\\packages\\": {}
+    "C:\\Users\\LENOVO\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\LENOVO\\Documents\\GitHub\\API\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj",
-      "packagesPath": "C:\\Users\\Abby\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\obj\\",
+      "projectPath": "C:\\Users\\LENOVO\\Documents\\GitHub\\API\\API\\API.csproj",
+      "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\LENOVO\\Documents\\GitHub\\API\\API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Abby\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5922,7 +5922,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
