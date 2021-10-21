@@ -26,14 +26,18 @@ namespace API.Controllers
             int result = employeeRepository.Insert(employee);
             switch (result)
             {
-                case 0: 
-                    return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil menambah data {employee.NIK}" });
-                case 1: 
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, NIK sudah terdaftar" });
+                case 0:
+                    return Ok(new { status = HttpStatusCode.OK,
+                        message = $"Berhasil menambah data {employee.NIK}" });
+                case 1:
+                    return Ok(new { status = HttpStatusCode.BadRequest,
+                        message = "Gagal menambahkan data, NIK sudah terdaftar" });
                 case 2:
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, email sudah terdaftar" });
+                    return Ok(new { status = HttpStatusCode.BadRequest,
+                        message = "Gagal menambahkan data, email sudah terdaftar" });
                 case 3:
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, nomor telpon sudah terdaftar" });
+                    return Ok(new { status = HttpStatusCode.BadRequest,
+                        message = "Gagal menambahkan data, nomor telpon sudah terdaftar" });
             }
             return Ok();
         }
@@ -45,7 +49,7 @@ namespace API.Controllers
             var result = employeeRepository.Get();
             if (result.Count() == 0)
             {
-                return Ok(new {status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
+                return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
             }
             else
             {

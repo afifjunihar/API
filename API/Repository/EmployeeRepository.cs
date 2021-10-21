@@ -43,7 +43,7 @@ namespace API.Repository
             {
                 return 1;
             }
-            else if (context.Employees.Where(e => e.email == employee.email).FirstOrDefault() != null)
+            else if (context.Employees.Where(e => e.Email == employee.Email).FirstOrDefault() != null)
             {
                 return 2;
             }
