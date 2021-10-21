@@ -24,13 +24,6 @@ namespace API.Controllers
         public ActionResult Post(Employee employee)
         {
             int result = employeeRepository.Insert(employee);
-            //if (result == 0)
-            //{
-            //}
-            //else if (result == 1)
-            //{
-            //    return Ok(new { status = HttpStatusCode.BadRequest, message = "Gagal menambahkan data, NIK sudah terdaftar" });
-            //}
             switch (result)
             {
                 case 0: 
