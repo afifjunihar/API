@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj": {}
+    "C:\\Users\\Afif Junihar Fakri\\OneDrive - UNIVERSITAS INDONESIA\\Kerja\\Kerja Bareng\\API\\API\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj": {
+    "C:\\Users\\Afif Junihar Fakri\\OneDrive - UNIVERSITAS INDONESIA\\Kerja\\Kerja Bareng\\API\\API\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj",
+        "projectUniqueName": "C:\\Users\\Afif Junihar Fakri\\OneDrive - UNIVERSITAS INDONESIA\\Kerja\\Kerja Bareng\\API\\API\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\API.csproj",
-        "packagesPath": "C:\\Users\\Abby\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Abby\\Documents\\GitHub\\API\\API\\obj\\",
+        "projectPath": "C:\\Users\\Afif Junihar Fakri\\OneDrive - UNIVERSITAS INDONESIA\\Kerja\\Kerja Bareng\\API\\API\\API.csproj",
+        "packagesPath": "C:\\Users\\Afif Junihar Fakri\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Afif Junihar Fakri\\OneDrive - UNIVERSITAS INDONESIA\\Kerja\\Kerja Bareng\\API\\API\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Abby\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Afif Junihar Fakri\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
