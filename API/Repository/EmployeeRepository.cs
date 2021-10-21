@@ -39,9 +39,25 @@ namespace API.Repository
 
         public int Insert(Employee employee)
         {
-            context.Employees.Add(employee);
-            var result = context.SaveChanges();
-            return result;
+            if (context.Employees.Find(employee.NIK) != null)
+            {
+                return 1;
+            }
+            else if (context.Employees.Where(e => e.email == employee.email).FirstOrDefault() != null)
+            {
+                return 2;
+            }
+            else if (context.Employees.Where(e => e.Phone == employee.Phone).FirstOrDefault() != null)
+            {
+                return 3;
+            }
+            else
+            {
+                context.Employees.Add(employee);
+                context.SaveChanges();
+                return 0;
+            }
+
         }
 
         public int Update(Employee employee)
