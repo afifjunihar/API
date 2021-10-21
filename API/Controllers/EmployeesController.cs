@@ -114,12 +114,13 @@ namespace API.Controllers
         [HttpPatch("{NIK}")]
         public ActionResult UpdatePatch(string NIK, Employee employee) 
         {
-            if (NIK != employeeRepository.Get(employee.NIK).NIK)
+            if (NIK != employeeRepository.Get(employee.NIK).NIK || employeeRepository.Get(employee.NIK) == null)
             {
                 return BadRequest(new { status = HttpStatusCode.OK, message = "Data Gagal Diubah" });
             }
             else 
             {
+
                 if (employee.FirstName == null)
                 {
                     employee.FirstName = employeeRepository.Get(employee.NIK).FirstName;
@@ -132,6 +133,22 @@ namespace API.Controllers
                 {
                     employee.Email = employeeRepository.Get(employee.NIK).Email;
                 }
+                else 
+                {
+                    foreach (var item in employeeRepository.Get())
+                    {
+                        if (item.Email == employee.Email)
+                        {
+                            return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, email sudah terdata di Database" });
+                        }
+                        else if (item.Phone == employee.Phone)
+                        {
+                            return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, nomor telepon sudah terdata di Database" });
+                        }
+                    }
+                }
+
+
                 if (employee.Salary == 0)
                 {
                     employee.Salary = employeeRepository.Get(employee.NIK).Salary;
@@ -140,14 +157,24 @@ namespace API.Controllers
                 {
                     employee.Phone = employeeRepository.Get(employee.NIK).Phone;
                 }
+                else 
+                {
+                    foreach (var item in employeeRepository.Get())
+                    {
+                        if (item.Phone == employee.Phone)
+                        {
+                            return Ok(new { status = HttpStatusCode.BadRequest, message = "Data gagal dimasukkan, nomor telepon sudah terdata di Database" });
+                        }
+                    }
+                }
                 if (employee.BirthDate == DateTime.MinValue)
                 {
                     employee.BirthDate = employeeRepository.Get(employee.NIK).BirthDate;
                 }
+
                 employeeRepository.Update(employee);
                 return Ok(new { status = HttpStatusCode.OK, message = "berhasil mengubah data" });
             }
-
         }
     }
 }
