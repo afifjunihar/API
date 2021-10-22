@@ -21,30 +21,37 @@ namespace API.Repository
             entities = myContext.Set<Entity>();
         }
 
-
         public int Delete(Key Key)
         {
-            throw new NotImplementedException();
+            var delete = entities.Find(Key);
+            entities.Remove(delete);
+            var result = myContext.SaveChanges();
+            return result;
         }
 
         public IEnumerable<Entity> Get()
         {
-            throw new NotImplementedException();
+            return entities.ToList();
         }
 
         public Entity Get(Key Key)
         {
-            throw new NotImplementedException();
+            var entity = entities.Find(Key);
+            myContext.Entry(entity).State = EntityState.Detached;
+            return entity;
         }
 
         public int Insert(Entity Entity)
         {
-            throw new NotImplementedException();
+             entities.Add(Entity);
+             return myContext.SaveChanges();           
         }
 
         public int Update(Entity Entity)
         {
-            throw new NotImplementedException();
+            myContext.Entry(Entity).State = EntityState.Modified;
+            var result = myContext.SaveChanges();
+            return result;
         }
     }
 }
