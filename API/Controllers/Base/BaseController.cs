@@ -33,9 +33,9 @@ namespace API.Controllers.Base
         }
 
         [HttpPost]
-        public ActionResult<Entity> Post(Entity entity)
+        public ActionResult<Entity> Post(Entity Entity)
         {
-            int result = repository.Insert(entity);
+            int result = repository.Insert(Entity);
             switch (result)
             {
                 case 0:
@@ -55,17 +55,17 @@ namespace API.Controllers.Base
         }
 
 
-        [HttpGet("{key}")]
-        public ActionResult<Entity> Get(Key key)
+        [HttpGet("{Key}")]
+        public ActionResult<Entity> Get(Key Key)
         {
-            if (repository.Get(key) == null)
+            if (repository.Get(Key) == null)
             {
                 return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
             }
             else
             {
-                var result = repository.Get(key);
-                return Ok(result);
+                var result = repository.Get(Key);
+                return Ok(new { status = HttpStatusCode.OK, result, message = "Data Berhasil Ditemukan" });
             }
         }
 
@@ -85,7 +85,7 @@ namespace API.Controllers.Base
         }
 
         [HttpPut]
-        public ActionResult<Entity> Put(Entity entity) 
+        public ActionResult<Entity> Put(Entity entity)
         {
             try
             {
@@ -98,6 +98,7 @@ namespace API.Controllers.Base
             }
         }
 
-
     }
+
+
 }

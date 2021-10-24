@@ -1,5 +1,8 @@
 using API.Context;
+using API.Models;
+using API.ViewModels;
 using API.Repository;
+using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Controllers.Base;
 
 namespace API
 {
@@ -29,7 +33,11 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<deletedRepository>();
+            services.AddScoped<EmployeeRepository>();
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<EducationRepository>();
+            services.AddScoped<ProfilingRepository>();
+            services.AddScoped<UniversityRepository>();
             services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
         }
 
