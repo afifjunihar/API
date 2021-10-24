@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace API.Controllers.Base
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class BaseController<Entity, Repository, Key> : ControllerBase
         where Entity : class
         where Repository : IRepository<Entity, Key>
@@ -35,52 +37,50 @@ namespace API.Controllers.Base
         [HttpPost]
         public ActionResult<Entity> Post(Entity Entity)
         {
-            int result = repository.Insert(Entity);
-            switch (result)
+            try
             {
-                case 0:
-                    return Ok(new
-                    {
-                        status = HttpStatusCode.OK,
-                        message = $"Berhasil menambah data"
-                    });
-                case 1:
-                    return Ok(new
-                    {
-                        status = HttpStatusCode.BadRequest,
-                        message = "Gagal menambahkan data, key sudah terdaftar"
-                    });
+               int result = repository.Insert(Entity);
+               return Ok(new{status = HttpStatusCode.OK, message = $"Berhasil menambah data"});
+    
             }
-            return Ok();
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Gagal menambahkan data, Primary Key sudah terdaftar"
+                });
+            }
+           
         }
 
 
         [HttpGet("{Key}")]
         public ActionResult<Entity> Get(Key Key)
         {
-            if (repository.Get(Key) == null)
-            {
-                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
-            }
-            else
+            try
             {
                 var result = repository.Get(Key);
                 return Ok(new { status = HttpStatusCode.OK, result, message = "Data Berhasil Ditemukan" });
+            }
+            catch (System.ArgumentNullException)
+            {
+                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
             }
         }
 
         [HttpDelete("{key}")]
         public ActionResult<Entity> Delete(Key key)
         {
-            if (repository.Get(key) == null)
-            {
-                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
-            }
-            else
+            try
             {
                 repository.Delete(key);
                 Console.WriteLine();
                 return Ok(new { status = HttpStatusCode.OK, message = $"Berhasil Menghapus data" });
+            }
+            catch (System.ArgumentNullException)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data tidak ditemukan" });
             }
         }
 
