@@ -43,8 +43,17 @@ namespace API.Repository
 
         public int Insert(Entity Entity)
         {
-             entities.Add(Entity);
-             return myContext.SaveChanges();           
+            if (entities.Contains(Entity))
+            {
+                entities.Add(Entity);
+                myContext.SaveChanges();
+                return 0;                
+            }
+            else 
+            {
+                return 1;
+            }           
+                    
         }
 
         public int Update(Entity Entity)

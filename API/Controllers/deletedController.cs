@@ -15,8 +15,8 @@ namespace API.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly EmployeeRepository employeeRepository;
-        public EmployeesController(EmployeeRepository employeeRepository)
+        private readonly deletedRepository employeeRepository;
+        public EmployeesController(deletedRepository employeeRepository)
         {
             this.employeeRepository = employeeRepository;
         }
