@@ -15,7 +15,7 @@ namespace EmployeeAPI.ViewModels
 		public string Password { get; set; }
 		public string Degree { get; set; }
 		public string GPA { get; set; }
-		public int UniversityId { get; set; }
+		public string UniversityId { get; set; }
 
 	}
 }

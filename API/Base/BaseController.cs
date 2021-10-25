@@ -30,7 +30,7 @@ namespace EmployeeAPI.Base
 			var result = repository.Get(key);
 			return Ok(result);
 		}
-		
+
 		[HttpPost]
 		public ActionResult<Entity> Post(Entity entity)
 		{

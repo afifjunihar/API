@@ -11,6 +11,6 @@ namespace EmployeeAPI.Models
 		[Key]
 		public int Id { get; set; }
 		public string Name { get; set; }
-		public ICollection<Education> Education { get; set; }
+		public virtual ICollection<Education> Education { get; set; }
 	}
 }

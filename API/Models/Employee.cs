@@ -14,6 +14,6 @@ namespace EmployeeAPI.Models
 		public string LastName { get; set; }
 		public string Phone { get; set; }
 		public DateTime BirthDate { get; set; }
-		public Account Acc { get; set; }
+		public virtual Account Acc { get; set; }
 	}
 }

@@ -17,8 +17,41 @@ namespace EmployeeAPI.Repository.Data
 		}
 		public int Register(RegisterVM entity)
 		{
-			var empResult = entity;
-			return 0;
+			// Insert to to employee
+			var empResult = new Employee 
+			{ 
+				NIK = entity.NIK , 
+				FirstName = entity.FirstName, 
+				LastName = entity.LastName, 
+				BirthDate = entity.BirthDate , 
+				Phone = entity.Phone,
+				Acc	= new Account
+				{
+					NIK = entity.NIK,
+					Password = entity.Password,
+					Profiling = new Profiling
+					{
+						NIK = entity.NIK,
+						Education = new Education
+						{
+							Degree = entity.Degree,
+							GPA = entity.GPA,
+							University = new University
+							{
+								Name = entity.UniversityId
+							}
+						}
+					}
+				}
+			};
+			eContext.Employees.Add(empResult);
+			var result = eContext.SaveChanges(); 
+			return result;
 		}
+
+		//public IEnumerable<RegisterVM> Gets()
+		//{
+		//	return RegisterVM.ToList();
+		//}
 	}
 }
