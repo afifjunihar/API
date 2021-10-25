@@ -22,6 +22,8 @@ namespace API.ViewModels
         public int EducationId { get; set; }
         public string Degree { get; set; }
         public string Gpa { get; set; }
+        public int UniversityId { get; set; }
+        public string Name { get; set; }
     }
 
     public enum Gender

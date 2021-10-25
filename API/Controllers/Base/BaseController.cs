@@ -30,7 +30,7 @@ namespace API.Controllers.Base
             }
             else
             {
-                return Ok(new { status = HttpStatusCode.OK, result, message = "Data ditemukan" });
+                return Ok(new { status = HttpStatusCode.OK, message = $"Sebanyak {result.Count()} Data Ditemukan", result });
             }
         }
 
@@ -40,7 +40,7 @@ namespace API.Controllers.Base
             try
             {
                int result = repository.Insert(Entity);
-               return Ok(new{status = HttpStatusCode.OK, message = $"Berhasil menambah data"});
+               return Ok(new{status = HttpStatusCode.OK, message = $"Berhasil menambah data", result});
     
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
@@ -61,11 +61,11 @@ namespace API.Controllers.Base
             try
             {
                 var result = repository.Get(Key);
-                return Ok(new { status = HttpStatusCode.OK, result, message = "Data Berhasil Ditemukan" });
+                return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result});
             }
             catch (System.ArgumentNullException)
             {
-                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
+                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data PK tidak ditemukan" });
             }
         }
 
@@ -80,7 +80,7 @@ namespace API.Controllers.Base
             }
             catch (System.ArgumentNullException)
             {
-                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data tidak ditemukan" });
+                return BadRequest(new { status = HttpStatusCode.NotFound, message = "Data PK tidak ditemukan" });
             }
         }
 
@@ -94,7 +94,7 @@ namespace API.Controllers.Base
             }
             catch (Exception)
             {
-                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data tidak ditemukan" });
+                return NotFound(new { status = HttpStatusCode.NotFound, message = "Data dengan PK tidak ditemukan" });
             }
         }
 

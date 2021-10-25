@@ -14,13 +14,14 @@ namespace API.Controllers.Base
 {
     public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
     {
-        public EmployeesController(EmployeeRepository EmployeeRepository) : base(EmployeeRepository) { }
+        public EmployeesController(EmployeeRepository employeeRepository) : base(employeeRepository) { }
 
         [HttpPost]
         [Route("Registration")]
         public ActionResult registration(RegisterVM register) 
         {
-            return Ok(new { status = HttpStatusCode.OK, register, message = "Data Berhasil Dimasukan" });
+           
+            return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Dimasukan", register });
 
         }
     }
