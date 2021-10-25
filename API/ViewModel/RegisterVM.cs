@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using API.Models;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,13 @@ namespace API.ViewModel
         [JsonConverter(typeof(StringEnumConverter))]
         public Gender Gender { get; set; }
         public string Password { get; set; }
-        public int Education_Id { get; set; }
         public string Degree { get; set; }
         public string GPA { get; set; }
+        public int UniversityId { get; set; }
     }
 
-    public enum Gender
-    {
-        Male, Female
-    }
+    //public enum Gender
+    //{
+    //    Male, Female
+    //}
 }
