@@ -41,7 +41,7 @@ namespace API.Repository
             return entity;
         }
 
-        public int Insert(Entity Entity)
+        public virtual int Insert(Entity Entity)
         {
             entities.Add(Entity);
             return myContext.SaveChanges();

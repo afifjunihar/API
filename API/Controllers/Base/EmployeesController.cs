@@ -17,6 +17,7 @@ namespace API.Controllers.Base
         private readonly EmployeeRepository employee;
         public EmployeesController(EmployeeRepository EmployeeRepository) : base(EmployeeRepository) { this.employee = EmployeeRepository; }
 
+
         [Route("Register")]
         [HttpPost]
         public ActionResult Regis(RegisterVM register)
@@ -26,9 +27,16 @@ namespace API.Controllers.Base
         }
         [Route("Register")]
         [HttpGet]
-        public ActionResult GetInfo()
+        public ActionResult GetProfileInfo()
         {
             return Ok(employee.GetProfile());
+        }
+
+        [Route("Register")]
+        [HttpGet("{nik}")]
+        public ActionResult GetProfileInfo(string nik)
+        {
+            return Ok(employee.GetProfileBy(nik));
         }
     }
 }
