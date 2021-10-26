@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -14,7 +15,9 @@ namespace API.Models
         public int Id { get; set; }
         public string Degree { get; set; }
         public string GPA { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Profiling> Profilings { get; set; }
+        [JsonIgnore]
         public virtual University University { get; set; }
         public int UniversityId { get; set; }
     }
