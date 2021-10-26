@@ -48,15 +48,12 @@ namespace API.Migrations
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UniversityId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UniversityId1")
+                    b.Property<int>("UniversityId")
                         .HasColumnType("int");
 
                     b.HasKey("EducationId");
 
-                    b.HasIndex("UniversityId1");
+                    b.HasIndex("UniversityId");
 
                     b.ToTable("TB_T_Education");
                 });
@@ -140,7 +137,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Models.University", "University")
                         .WithMany("Education")
-                        .HasForeignKey("UniversityId1")
+                        .HasForeignKey("UniversityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

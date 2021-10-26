@@ -20,12 +20,28 @@ namespace API.Repository.Data
 
         public int Register(RegisterVM entity) 
         {
+            var checkEmail = eContext.Employees.Where(p => p.Email == entity.Email).FirstOrDefault();
+            var checkPhone = eContext.Employees.Where(p => p.Phone == entity.Phone).FirstOrDefault();
+            var checkNik = eContext.Employees.Find(entity.NIK);
             if (entity.NIK == string.Empty)
             {
                 return 0;
+            }  
+            else if (checkNik != null)
+            {
+                return 1;
+            }
+            else if (checkEmail != null)
+            {
+                return 2;
+            }
+            else if (checkPhone != null)
+            {
+                return 3;
             }
             else
             {
+                string hashPassword = BCrypt.Net.BCrypt.HashPassword(entity.Password);
                 var employee = new Employee
                 {
 
@@ -40,7 +56,7 @@ namespace API.Repository.Data
                     Account = new Account
                     {
                         NIK = entity.NIK,
-                        Password = entity.Password,
+                        Password = hashPassword,
                         Profiling = new Profiling
                         {
                             NIK = entity.NIK,

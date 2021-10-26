@@ -36,11 +36,8 @@ namespace API.Controllers.Base
             try
             {
                 var result = employee.Register(register);
-                if (result != 0)
-                {
-                    return Ok("Berhasil Registrasi");
-                }
-                else if (result == 0)
+           
+                if (result == 0)
                 {
                     return BadRequest(new
                     {
@@ -48,20 +45,30 @@ namespace API.Controllers.Base
                         message = "Gagal menambahkan data, Primary Key tidak boleh kosong"
                     });
                 }
+                else if (result == 1)
+                {
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "NIK sudah tersedia" });
+                }
+                else if (result == 2)
+                {
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
+                }
+                else if (result == 3)
+                {
+                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
+                }
                 else 
                 {
-                    return BadRequest(new
-                    {
-                        status = HttpStatusCode.BadRequest
-                    });
+                    return Ok("Berhasil Registrasi");
+
                 }
             }
-            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+            catch (Exception)
             {
                 return BadRequest(new
                 {
                     status = HttpStatusCode.BadRequest,
-                    message = "Gagal menambahkan data, Primary Key sudah terdaftar"
+                    message = "Gagal menambahkan data, Cek bagian Register => Employees Controller"
                 });
             }
 
