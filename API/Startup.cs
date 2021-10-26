@@ -1,5 +1,5 @@
 using API.Context;
-using API.Repository;
+using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,9 +28,13 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); ;
             services.AddScoped<EmployeeRepository>();
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            services.AddScoped<UniversityRepository>();
+            services.AddScoped<AccountRepository>();
+            services.AddScoped<EducationRepository>();
+            services.AddScoped<ProfilingRepository>();
+            services.AddDbContext<MyContext>(options => options.UseLazyLoadingProxies().UseSqlServer(Configuration.GetConnectionString("APIContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
