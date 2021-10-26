@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Controllers.Base;
+using API.HashingPassword;
 
 namespace API
 {
@@ -38,10 +39,11 @@ namespace API
             services.AddScoped<EducationRepository>();
             services.AddScoped<ProfilingRepository>();
             services.AddScoped<UniversityRepository>();
-            services.AddDbContext<MyContext>(option => option.UseSqlServer(Configuration.GetConnectionString("APIContext")));  
-            //services.AddDbContext<MyContext>(options =>
-            //         options.UseLazyLoadingProxies()
-            //         .UseSqlServer(Configuration.GetConnectionString("APIContext")));          
+            services.AddScoped<Hashing>();
+            services.AddDbContext<MyContext>(option => option.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            services.AddDbContext<MyContext>(options =>
+                     options.UseLazyLoadingProxies()
+                     .UseSqlServer(Configuration.GetConnectionString("APIContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

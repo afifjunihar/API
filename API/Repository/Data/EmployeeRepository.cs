@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using API.HashingPassword;
 using API.Models;
 using API.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -56,7 +57,7 @@ namespace API.Repository.Data
                     Account = new Account
                     {
                         NIK = entity.NIK,
-                        Password = hashPassword,
+                        Password = Hashing.HashPassword(entity.Password),
                         Profiling = new Profiling
                         {
                             NIK = entity.NIK,
@@ -64,10 +65,7 @@ namespace API.Repository.Data
                             {
                                 Degree = entity.Degree,
                                 Gpa = entity.Gpa,
-                                University = new University
-                                {
-                                    Name = entity.Name
-                                }
+                                UniversityId = entity.UniversityId
                             }
                         }
                     }

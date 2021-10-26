@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,8 +18,11 @@ namespace API.Models
         [ForeignKey("UniversityId")]
         public int UniversityId { get; set; }
 
-        public  University University { get; set; }
-        public  string NIK { get; set; }
-        public  ICollection<Profiling> Profiling { get; set; }
+        [JsonIgnore]
+        public virtual University University { get; set; }
+        [JsonIgnore]
+        public virtual string NIK { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<Profiling> Profiling { get; set; }
     }
 }
