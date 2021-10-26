@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.HashingPassword;
+
 
 namespace API.Repository.Data
 {
@@ -36,7 +38,6 @@ namespace API.Repository.Data
             }
             else
             {
-                string hashPassword = BCrypt.Net.BCrypt.HashPassword(registerVM.Password);
                 var empResult = new Employee
                 {
                     NIK = registerVM.NIK,
@@ -49,7 +50,7 @@ namespace API.Repository.Data
                     Account = new Account
                     {
                         NIK = registerVM.NIK,
-                        Password = hashPassword,
+                        Password = Hashing.HashPassword(registerVM.Password),
                         Profiling = new Profiling
                         {
                             NIK = registerVM.NIK,
