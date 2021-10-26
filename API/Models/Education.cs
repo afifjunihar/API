@@ -15,10 +15,10 @@ namespace API.Models
         public string Degree { get; set; }
         public string Gpa { get; set; }
         [ForeignKey("UniversityId")]
-        public string UniversityId { get; set; }
+        public int UniversityId { get; set; }
 
-        public University University { get; set; }
-        public string NIK { get; set; }
-        public ICollection<Profiling> Profiling { get; set; }
+        public  University University { get; set; }
+        public  string NIK { get; set; }
+        public  ICollection<Profiling> Profiling { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace API.Models
         [ForeignKey("EducationId")]
         public int EducationId { get; set; }
 
-        public Education Education { get; set; }
-        public Account Account { get; set; }
+        public  Education Education { get; set; }
+        public  Account Account { get; set; }
     }
 }

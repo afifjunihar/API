@@ -23,14 +23,25 @@ namespace API.Controllers.Base
         [HttpGet]
         public ActionResult<Entity> Get()
         {
-            var result = repository.Get();
-            if (result.Count() == 0)
+            try
             {
-                return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
+                var result = repository.Get();
+                if (result.Count() == 0)
+                {
+                    return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
+                }
+                else
+                {
+                    return Ok(new { status = HttpStatusCode.OK, message = $"Sebanyak {result.Count()} Data Ditemukan", result });
+                }
             }
-            else
+            catch (Exception)
             {
-                return Ok(new { status = HttpStatusCode.OK, message = $"Sebanyak {result.Count()} Data Ditemukan", result });
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Gagal Mendapat Data, Error terjadi"
+                });
             }
         }
 

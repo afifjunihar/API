@@ -13,7 +13,8 @@ namespace API.Models
         [Key]
         public int UniversityId { get; set; }
         public string Name { get; set; }
+
         public int EducationId { get; set; }
-        public ICollection<Education> Education { get; set; }
+        public  ICollection<Education> Education { get; set; }
     }
 }

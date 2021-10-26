@@ -10,11 +10,12 @@ namespace API.Models
     [Table("Tb_T_Employee")]
     public class Account
     {
+
         [Key]
         public string NIK { get; set; }
         public string Password { get; set; }
 
-        public Employee Employee { get; set; }
-        public Profiling Profiling { get; set; }
+        public  Employee Employee { get; set; }
+        public  Profiling Profiling { get; set; }
     }
 }
