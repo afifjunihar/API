@@ -19,7 +19,7 @@ namespace API.Repository.Data
             this.eContext = myContext;
         }
 
-        public object getFullName(LoginVM loginVM) 
+        public object GetFullName(LoginVM loginVM) 
         {
             var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
             var Fullname = checkEmail.FirstName + " " + checkEmail.LastName;
@@ -126,15 +126,15 @@ namespace API.Repository.Data
                           from f in table3
                           select new
                           {
-                              NIK = a.NIK,
+                              a.NIK,
                               Fullname = a.FirstName + " " + a.LastName,
-                              Phone = a.Phone,
-                              BirthDate = a.BirthDate,
-                              Salary = a.Salary,
-                              Email = a.Email,
-                              Degree = d.Degree,
-                              GPA = d.Gpa,
-                              University = f.Name
+                              a.Phone,
+                              a.BirthDate,
+                              a.Salary,
+                              a.Email,
+                              d.Degree,
+                              d.Gpa,
+                              f.Name
                           };
             return getData;
         }
@@ -159,15 +159,15 @@ namespace API.Repository.Data
                           from f in table3
                           select new
                           {
-                              NIK = a.NIK,
+                              a.NIK,
                               Fullname = a.FirstName + " " + a.LastName,
-                              Phone = a.Phone,
-                              BirthDate = a.BirthDate,
-                              Salary = a.Salary,
-                              Email = a.Email,
-                              Degree = d.Degree,
-                              GPA = d.Gpa,
-                              University = f.Name
+                              a.Phone,
+                              a.BirthDate,
+                              a.Salary,
+                              a.Email,
+                              d.Degree,
+                              d.Gpa,
+                              f.Name
                           };
             return getData.FirstOrDefault();
         }
