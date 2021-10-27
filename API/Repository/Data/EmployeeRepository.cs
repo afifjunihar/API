@@ -79,10 +79,22 @@ namespace API.Repository.Data
                                 GPA = registerVM.GPA,
                                 University_Id = registerVM.UniversityId
                             }
-                        }
+                        },
                     }
                 };
+
+                if (registerVM.Role_Id == 0)
+                {
+                    registerVM.Role_Id = 1;
+                }
+
+                var empRole = new AccountRole
+                {
+                    NIK = registerVM.NIK,
+                    Role_Id = registerVM.Role_Id
+                };
                 context.Employees.Add(empResult);
+                context.AccountRoles.Add(empRole);
                 var result = context.SaveChanges();
                 return result;
             }
@@ -95,14 +107,26 @@ namespace API.Repository.Data
             var profilingData = context.Profilings.ToList();
             var educationData = context.Educations.ToList();
             var universityData = context.Universities.ToList();
+            var accountRoleData = context.AccountRoles.ToList();
+            var roleData = context.Roles.ToList();
 
             var profile = from e in employeeData
                           join p in profilingData on e.NIK equals p.NIK into table1
+
                           from p in table1.ToList()
                           join ed in educationData on p.Education_Id equals ed.Id into table2
+
                           from ed in table2.ToList()
                           join uni in universityData on ed.University_Id equals uni.Id into table3
-                          from uni in table3
+
+                          from uni in table3.ToList() 
+                          join ar in accountRoleData on e.NIK equals ar.NIK into table4
+
+                          from ar in table4.ToList()
+                          join r in roleData on ar.Role_Id equals r.Role_Id into table5
+
+                          from r in table5
+
                           select new
                           {
                               NIK = e.NIK,
@@ -113,7 +137,8 @@ namespace API.Repository.Data
                               Email = e.Email,
                               Degree = ed.Degree,
                               GPA = ed.GPA,
-                              University = uni.Name
+                              University = uni.Name,
+                              Role = r.Role_Name
                           };
 
             if (profile.Count() == 0 )
