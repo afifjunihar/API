@@ -14,6 +14,7 @@ namespace API.Models
 
         [Key]
         public string NIK { get; set; }
+        [Required]
         public string Password { get; set; }
 
         [JsonIgnore]

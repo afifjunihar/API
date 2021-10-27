@@ -19,6 +19,32 @@ namespace API.Repository.Data
             this.eContext = myContext;
         }
 
+        public int Login(LoginVM loginVM) 
+        {
+            var checkEmail1 = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
+            var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).First();
+
+            if (checkEmail == null)
+            {
+                return 1;
+            }
+            else 
+            {
+                var dataLogin = checkEmail.NIK;
+                var dataPassword = eContext.Accounts.Find(dataLogin).Password;
+                var verify = Hashing.ValidatePassword(loginVM.Password, dataPassword);
+
+                if (verify)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 2;
+                }            
+            }
+        }
+
         public int Register(RegisterVM entity) 
         {
             var checkEmail = eContext.Employees.Where(p => p.Email == entity.Email).FirstOrDefault();
@@ -138,7 +164,7 @@ namespace API.Repository.Data
                               GPA = d.Gpa,
                               University = f.Name
                           };
-            return getData.First();
+            return getData.FirstOrDefault();
         }
 
         //public Employee GetProfile(string NIK) 

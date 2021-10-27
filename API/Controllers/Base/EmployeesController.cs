@@ -82,6 +82,7 @@ namespace API.Controllers.Base
             try
             {
             var result = employee.GetProfile();    
+           
             return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result});  
 
             }
@@ -112,6 +113,41 @@ namespace API.Controllers.Base
                 {
                     status = HttpStatusCode.BadRequest,
                     message = "Gagal menambahkan data, Primary Key tidak terdaftar"
+                });
+            }
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public ActionResult Login(LoginVM login)
+        {
+            var checkLogin = employee.Login(login);
+            if (checkLogin == 0)
+            {
+                return Ok(new { status = HttpStatusCode.OK, message = "Selamat Datang" });
+            }
+            else if (checkLogin == 1)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Email yang Anda Masukan Tidak Terdaftar"
+                });
+            }
+            else if (checkLogin == 2)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Password yang Anda Masukan Salah"
+                });
+            }
+            else 
+            {
+                return NotFound(new
+                {
+                    status = HttpStatusCode.NotFound,
+                    message = "Terjadi Error mohon chek line 120 EmployeesRepository"
                 });
             }
         }

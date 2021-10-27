@@ -40,10 +40,12 @@ namespace API
             services.AddScoped<ProfilingRepository>();
             services.AddScoped<UniversityRepository>();
             services.AddScoped<Hashing>();
-            services.AddDbContext<MyContext>(option => option.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+           
             services.AddDbContext<MyContext>(options =>
                      options.UseLazyLoadingProxies()
                      .UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            services.AddControllers().AddNewtonsoftJson(x =>
+                     x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -13,6 +13,7 @@ namespace API.Models
     {
         [Key]
         public int UniversityId { get; set; }
+        [Required]
         public string Name { get; set; }
 
         [JsonIgnore]

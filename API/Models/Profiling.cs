@@ -13,6 +13,7 @@ namespace API.Models
     {
         [Key]
         public string NIK { get; set; }
+        [Required]
         [ForeignKey("EducationId")]
         public int EducationId { get; set; }
 

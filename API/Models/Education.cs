@@ -13,9 +13,12 @@ namespace API.Models
     {
        [Key]
         public int EducationId { get; set; }
+        [Required]
         public string Degree { get; set; }
+        [Required]
         public string Gpa { get; set; }
         [ForeignKey("UniversityId")]
+        [Required]
         public int UniversityId { get; set; }
 
         [JsonIgnore]
