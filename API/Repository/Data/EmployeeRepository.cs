@@ -89,7 +89,7 @@ namespace API.Repository.Data
         }
 
 
-        public IEnumerable GetProfile()
+        public dynamic GetProfile()
         {
             var employeeData = context.Employees.ToList();
             var profilingData = context.Profilings.ToList();
@@ -116,7 +116,15 @@ namespace API.Repository.Data
                               University = uni.Name
                           };
 
-            return profile;
+            if (profile.Count() == 0 )
+            {
+                string result = "Tidak ditemukan data pada database";
+                return result;
+            }
+            else
+            {
+                return profile;
+            }
         }
 
         public IEnumerable GetProfileBy(string NIK)
@@ -148,6 +156,39 @@ namespace API.Repository.Data
                           };
 
             return profile;
+        }
+        public int Login(LoginVM loginVM)
+        {
+            var checkEmail = context.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
+            if (checkEmail != null)
+            {
+                var dataLogin = checkEmail.NIK;
+                var dataPassword = context.Accounts.Find(dataLogin).Password;
+                var verify = Hashing.ValidatePassword(loginVM.Password, dataPassword);
+
+                if (verify)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return 2;
+                }
+            }
+            else
+            {
+                return 1;
+            }
+        }
+        public override int Delete(string NIK)
+        {
+            var delete = context.Employees.Find(NIK);
+            var findProfiling = context.Profilings.Find(NIK);
+            var findEdu = context.Educations.Find(findProfiling.Education_Id);
+            context.Employees.Remove(delete);
+            context.Educations.Remove(findEdu);
+            var result = context.SaveChanges();
+            return result;
         }
 
     }

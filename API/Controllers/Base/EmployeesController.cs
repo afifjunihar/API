@@ -45,8 +45,7 @@ namespace API.Controllers.Base
         [Route("Register")]
         [HttpGet]
         public ActionResult GetProfileInfo()
-        {
-            
+        { 
             return Ok(employee.GetProfile());
         }
 
@@ -55,6 +54,41 @@ namespace API.Controllers.Base
         public ActionResult GetProfileInfo(string nik)
         {
             return Ok(employee.GetProfileBy(nik));
+        }
+
+        [HttpPost]
+        [Route("Login")]
+        public ActionResult Login(LoginVM login)
+        {
+            var checkLogin = employee.Login(login);
+            if (checkLogin == 0)
+            {
+                return Ok(new { status = HttpStatusCode.OK, message = "Selamat Datang" });
+            }
+            else if (checkLogin == 1)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Email yang Anda Masukan Tidak Terdaftar"
+                });
+            }
+            else if (checkLogin == 2)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Password yang Anda Masukan Salah"
+                });
+            }
+            else
+            {
+                return NotFound(new
+                {
+                    status = HttpStatusCode.NotFound,
+                    message = "Terjadi Error"
+                });
+            }
         }
     }
 }

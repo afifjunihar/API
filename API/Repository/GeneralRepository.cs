@@ -21,7 +21,7 @@ namespace API.Repository
             entities = myContext.Set<Entity>();
         }
 
-        public int Delete(Key Key)
+        public virtual int Delete(Key Key)
         {
             var delete = entities.Find(Key);
             entities.Remove(delete);
