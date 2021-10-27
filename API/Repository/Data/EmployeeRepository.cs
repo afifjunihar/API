@@ -21,14 +21,8 @@ namespace API.Repository.Data
 
         public int Login(LoginVM loginVM) 
         {
-            var checkEmail1 = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
-            var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).First();
-
-            if (checkEmail == null)
-            {
-                return 1;
-            }
-            else 
+            var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
+            if (checkEmail != null)
             {
                 var dataLogin = checkEmail.NIK;
                 var dataPassword = eContext.Accounts.Find(dataLogin).Password;
@@ -42,6 +36,10 @@ namespace API.Repository.Data
                 {
                     return 2;
                 }            
+            }
+            else 
+            {
+                return 1;
             }
         }
 
