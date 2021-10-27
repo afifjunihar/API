@@ -210,6 +210,15 @@ namespace API.Repository.Data
             var delete = context.Employees.Find(NIK);
             var findProfiling = context.Profilings.Find(NIK);
             var findEdu = context.Educations.Find(findProfiling.Education_Id);
+
+            int roleNumbers = context.AccountRoles.Where(p => p.NIK == NIK).Count();
+            for (int i = 0; i < roleNumbers; i++)
+            {
+                var findRoles = context.AccountRoles.Where(p => p.NIK == NIK).FirstOrDefault();
+                context.AccountRoles.Remove(findRoles);
+                var _result = context.SaveChanges();
+            }
+
             context.Employees.Remove(delete);
             context.Educations.Remove(findEdu);
             var result = context.SaveChanges();
