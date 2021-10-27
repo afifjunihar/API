@@ -39,7 +39,7 @@ namespace API.Controllers.Base
             int result = repository.Insert(entity);
             switch (result)
             {
-                case 1:
+                case 2:
                     return Ok(new
                     {
                         status = HttpStatusCode.OK,

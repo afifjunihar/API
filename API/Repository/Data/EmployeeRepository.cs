@@ -1,4 +1,5 @@
 ﻿using API.Context;
+using API.HashPassword;
 using API.Models;
 using API.ViewModel;
 using System;
@@ -6,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace API.Repository.Data
 {
@@ -35,56 +37,57 @@ namespace API.Repository.Data
                 return 1;
             }
         }
-        public int Register(RegisterVM entity)
+        public int Register(RegisterVM registerVM)
         {
-            //register employee
-            var register = new Employee
+            var checkEmail = context.Employees.Where(p => p.Email == registerVM.Email).FirstOrDefault();
+            var checkPhone = context.Employees.Where(p => p.Phone == registerVM.Phone).FirstOrDefault();
+            var checkNik = context.Employees.Find(registerVM.NIK);
+            if (checkNik != null)
             {
-                NIK = entity.NIK,
-                FirstName = entity.FirstName,
-                LastName = entity.LastName,
-                Phone = entity.Phone,
-                Email = entity.Email,
-                Gender = entity.Gender,
-                BirthDate = entity.BirthDate,
-                Salary = entity.Salary,
-                Account = new Account
+                return 1;
+            }
+            else if (checkEmail != null)
+            {
+                return 2;
+            }
+            else if (checkPhone != null)
+            {
+                return 3;
+            }
+            else
+            {
+                string hashPassword = Hashing.HashPassword(registerVM.Password);
+                var empResult = new Employee
                 {
-                    NIK = entity.NIK,
-                    Password = entity.Password,
-                    Profiling = new Profiling
+                    NIK = registerVM.NIK,
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
+                    BirthDate = registerVM.BirthDate,
+                    Phone = registerVM.Phone,
+                    Salary = registerVM.Salary,
+                    Email = registerVM.Email,
+                    Account = new Account
                     {
-                        NIK = entity.NIK,
-                        Education = new Education
+                        NIK = registerVM.NIK,
+                        Password = hashPassword,
+                        Profiling = new Profiling
                         {
-                            Degree = entity.Degree,
-                            GPA = entity.GPA,
-                            University_Id = entity.UniversityId
+                            NIK = registerVM.NIK,
+                            Education = new Education
+                            {
+                                Degree = registerVM.Degree,
+                                GPA = registerVM.GPA,
+                                University_Id = registerVM.UniversityId
+                            }
                         }
                     }
-                }
-
-            };
-
-            //if (context.Employees.Find(entity.NIK).NIK != null)
-            //{
-            //    return 0;
-            //}
-            //else if (context.Employees.Where(e => e.Email == entity.Email).FirstOrDefault() != null)
-            //{
-            //    return 2;
-            //}
-            //else if (context.Employees.Where(e => e.Phone == entity.Phone).FirstOrDefault() != null)
-            //{
-            //    return 3;
-            //}
-            //else
-            //{
-            //}
-            context.Employees.Add(register);
-            int result = context.SaveChanges();
-            return 1;
+                };
+                context.Employees.Add(empResult);
+                var result = context.SaveChanges();
+                return result;
+            }
         }
+
 
         public IEnumerable GetProfile()
         {

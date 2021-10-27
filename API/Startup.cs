@@ -1,4 +1,5 @@
 using API.Context;
+using API.HashPassword;
 using API.Repository;
 using API.Repository.Data;
 using Microsoft.AspNetCore.Builder;
@@ -35,8 +36,14 @@ namespace API
             services.AddScoped<ProfilingRepository>();
             services.AddScoped<EducationRepository>();
             services.AddScoped<UniversityRepository>();
+            services.AddScoped<Hashing>();
+            services.AddDbContext<MyContext>(options =>
+                     options.UseLazyLoadingProxies()
+                     .UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            services.AddControllers().AddNewtonsoftJson(x =>
+            x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
-            services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
+            //services.AddDbContext<MyContext>(options => options.UseSqlServer(Configuration.GetConnectionString("APIContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
