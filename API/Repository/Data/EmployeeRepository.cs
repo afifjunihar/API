@@ -19,6 +19,13 @@ namespace API.Repository.Data
             this.eContext = myContext;
         }
 
+        public object getFullName(LoginVM loginVM) 
+        {
+            var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();
+            var Fullname = checkEmail.FirstName + " " + checkEmail.LastName;
+            return Fullname;
+        }
+
         public int Login(LoginVM loginVM) 
         {
             var checkEmail = eContext.Employees.Where(p => p.Email == loginVM.Email).FirstOrDefault();

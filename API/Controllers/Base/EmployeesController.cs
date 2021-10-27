@@ -124,7 +124,8 @@ namespace API.Controllers.Base
             var checkLogin = employee.Login(login);
             if (checkLogin == 0)
             {
-                return Ok(new { status = HttpStatusCode.OK, message = "Selamat Datang" });
+                var getFullName = employee.getFullName(login);
+                return Ok(new { status = HttpStatusCode.OK, message = $"Login Berhasil !", greetings = $"Selamat Datang {getFullName}" });
             }
             else if (checkLogin == 1)
             {
