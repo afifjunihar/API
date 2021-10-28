@@ -29,12 +29,22 @@ namespace EmployeeAPI
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddControllers();
+			services.AddControllers()
+				.AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore); // error handle lazyloading
 			services.AddScoped<AccountRepository>();
 			services.AddScoped<EmployeeRepository>();
+			services.AddScoped<EducationRepository>();
+			services.AddScoped<ProfilingRepository>();
+			services.AddScoped<UniversityRepository>();
 			services.AddDbContext<MyContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("APIContext"))
 			);
+			// CORS
+			services.AddCors(c =>
+			{
+				c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+			});
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +54,7 @@ namespace EmployeeAPI
 			{
 				app.UseDeveloperExceptionPage();
 			}
+			app.UseCors(options => options.AllowAnyOrigin());
 
 			app.UseHttpsRedirection();
 
