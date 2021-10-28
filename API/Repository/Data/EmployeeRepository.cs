@@ -158,6 +158,8 @@ namespace API.Repository.Data
             var profilingData = context.Profilings.ToList();
             var educationData = context.Educations.ToList();
             var universityData = context.Universities.ToList();
+            var accountRoleData = context.AccountRoles.ToList();
+            var roleData = context.Roles.ToList();
 
             var profile = from e in employeeData
                           join p in profilingData on e.NIK equals p.NIK into table1
@@ -165,10 +167,18 @@ namespace API.Repository.Data
                           join ed in educationData on p.Education_Id equals ed.Id into table2
                           from ed in table2.ToList()
                           join uni in universityData on ed.University_Id equals uni.Id into table3
-                          from uni in table3
+
+                          from uni in table3.ToList()
+                          join ar in accountRoleData on e.NIK equals ar.NIK into table4
+
+                          from ar in table4.ToList()
+                          join r in roleData on ar.Role_Id equals r.Role_Id into table5
+
+                          from r in table5
                           where e.NIK == NIK
                           select new
                           {
+                              Role = r.Role_Name,
                               NIK = e.NIK,
                               Fullname = e.FirstName + " " + e.LastName,
                               Phone = e.Phone,
@@ -221,6 +231,14 @@ namespace API.Repository.Data
 
             context.Employees.Remove(delete);
             context.Educations.Remove(findEdu);
+            var result = context.SaveChanges();
+            return result;
+        }
+
+        public int SignManager(AccountRole accountRole)
+        {
+            accountRole.Role_Id = 2;
+            context.AccountRoles.Add(accountRole);
             var result = context.SaveChanges();
             return result;
         }

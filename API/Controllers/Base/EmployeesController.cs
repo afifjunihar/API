@@ -3,6 +3,7 @@ using API.Models;
 using API.Repository.Data;
 using API.ViewModel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,12 @@ namespace API.Controllers.Base
     public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
     {
         private readonly EmployeeRepository employee;
-        public EmployeesController(EmployeeRepository EmployeeRepository) : base(EmployeeRepository) { this.employee = EmployeeRepository; }
+        public IConfiguration _configuration;
+        public EmployeesController(EmployeeRepository EmployeeRepository, IConfiguration configuration) : base(EmployeeRepository) 
+        { 
+            this.employee = EmployeeRepository;
+            this._configuration = configuration;
+        }
 
 
         [Route("Register")]
@@ -96,6 +102,14 @@ namespace API.Controllers.Base
         public string funtion()
         {
             return "Test CORS berhasil";
+        }
+
+        [HttpPost]
+        [Route("SignManager")]
+        public ActionResult SignManager(AccountRole role)
+        {
+            var result = employee.SignManager(role);
+            return Ok(new { status = HttpStatusCode.OK, message = $"berhasil mengatur NIK {role.NIK} sebagai manager " });
         }
     }
 }
