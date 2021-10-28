@@ -90,5 +90,12 @@ namespace API.Controllers.Base
                 });
             }
         }
+
+        [HttpGet]
+        [Route("TestCORS")]
+        public string funtion()
+        {
+            return "Test CORS berhasil";
+        }
     }
 }
