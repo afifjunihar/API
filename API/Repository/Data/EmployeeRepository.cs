@@ -1,29 +1,42 @@
 ﻿using API.Context;
 using API.Models;
-using API.ViewModel;
+using API.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using API.HashingPassword;
 
-
-namespace API.Repository.Data
+namespace API.Repository
 {
-    public class EmployeeRepository : GeneralRepository<MyContext, Employee, string>
+    public class EmployeeRepository : IEmployeeRepository
     {
         private readonly MyContext context;
-        public EmployeeRepository(MyContext myContext) : base(myContext)
+        public EmployeeRepository(MyContext context)
         {
-            this.context = myContext;
+            this.context = context;
         }
-
-        public int Register(RegisterVM registerVM)
+        public int Delete(string NIK)
         {
-            var checkEmail = context.Employees.Where(p => p.Email == registerVM.Email).FirstOrDefault();
-            var checkPhone = context.Employees.Where(p => p.Phone == registerVM.Phone).FirstOrDefault();
-            var checkNik = context.Employees.Find(registerVM.NIK);
+            var entity = context.Employees.Find(NIK);
+            context.Remove(entity);
+            var result = context.SaveChanges();
+            return result;
+        }
+        public IEnumerable<Employee> Get()
+        {
+            return context.Employees.ToList();
+        }
+        public Employee Get(string NIK)
+        {
+            var entity = context.Employees.Find(NIK);
+            return entity;
+        }
+        public int Insert(Employee employee)
+        {
+            var checkEmail = context.Employees.Where(p => p.Email == employee.Email).FirstOrDefault();
+            var checkPhone = context.Employees.Where(p => p.Phone == employee.Phone).FirstOrDefault();
+            var checkNik = context.Employees.Find(employee.NIK);
             if (checkNik != null)
             {
                 return 1;
@@ -38,82 +51,16 @@ namespace API.Repository.Data
             }
             else
             {
-                var empResult = new Employee
-                {
-                    NIK = registerVM.NIK,
-                    FirstName = registerVM.FirstName,
-                    LastName = registerVM.LastName,
-                    BirthDate = registerVM.BirthDate,
-                    Phone = registerVM.Phone,
-                    Salary = registerVM.Salary,
-                    Email = registerVM.Email,
-                    Account = new Account
-                    {
-                        NIK = registerVM.NIK,
-                        Password = Hashing.HashPassword(registerVM.Password),
-                        Profiling = new Profiling
-                        {
-                            NIK = registerVM.NIK,
-                            Education = new Education
-                            {
-                                Degree = registerVM.Degree,
-                                GPA = registerVM.GPA,
-                                UniversityId = registerVM.UniversityId
-                            }
-                        }
-                    }
-                };
-                context.Employees.Add(empResult);
-                var result = context.SaveChanges();
-                return result;
+                context.Employees.Add(employee);
+                context.SaveChanges();
+                return 0;
             }
         }
-
-        public IEnumerable GetProfile()
+        public int Update(Employee employee)
         {
-            var profile = (from Employee in context.Employees
-                           join Account in context.Accounts on Employee.NIK equals Account.NIK
-                           join Profiling in context.Profilings on Account.NIK equals Profiling.NIK
-                           join Education in context.Educations on Profiling.EducationId equals Education.Id
-                           join Universitas in context.Universities on Education.UniversityId equals Universitas.Id
-                           select new
-                           {
-                               NIK = Employee.NIK,
-                               Fullname = Employee.FirstName + " " + Employee.LastName,
-                               Phone = Employee.Phone,
-                               BirthDate = Employee.BirthDate,
-                               Salary = Employee.Salary,
-                               Email = Employee.Email,
-                               Degree = Education.Degree,
-                               GPA = Education.GPA,
-                               Nama_Universitas = Universitas.Name
-                           });
-            return profile;
-        }
-
-        public Object GetProfile(string NIK)
-        {
-            var profile = (from Employee in context.Employees
-                           join Account in context.Accounts on Employee.NIK equals Account.NIK
-                           join Profiling in context.Profilings on Account.NIK equals Profiling.NIK
-                           join Education in context.Educations on Profiling.EducationId equals Education.Id
-                           join Universitas in context.Universities on Education.UniversityId equals Universitas.Id
-                           where Employee.NIK == NIK
-                           select new
-                           {
-                               NIK = Employee.NIK,
-                               Fullname = Employee.FirstName + " " + Employee.LastName,
-                               Phone = Employee.Phone,
-                               BirthDate = Employee.BirthDate,
-                               Salary = Employee.Salary,
-                               Email = Employee.Email,
-                               Degree = Education.Degree,
-                               GPA = Education.GPA,
-                               Nama_Universitas = Universitas.Name
-                           });
-            var result = profile.First();
+            context.Entry(employee).State = EntityState.Modified;
+            var result = context.SaveChanges();
             return result;
         }
-
     }
 }
