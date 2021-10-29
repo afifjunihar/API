@@ -42,11 +42,12 @@ namespace EmployeeAPI.Repository
 		{
 			myContext.Entry(entity).State = EntityState.Modified;
 			var result = myContext.SaveChanges();
-			return result;
+			return result; 
 		}
-		public int Delete(Entity entity, Key key)
+		public int Delete(Key key)
 		{
-			entities.Remove(entity);
+			var deletedData = entities.Find(key);
+			entities.Remove(deletedData);
 			var result = myContext.SaveChanges();
 			return result;
 		}

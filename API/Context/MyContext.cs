@@ -19,7 +19,13 @@ namespace EmployeeAPI.Context
 		public DbSet<Profiling> Profilings { get; set; }
 		public DbSet<Education> Educations { get; set; }
 		public DbSet<University> Universities { get; set; }
+		public DbSet<AccountRole> AccountRoles { get; set; }
+		public DbSet<Role> Roles { get; set; }
 
+		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		{
+			optionsBuilder.UseLazyLoadingProxies();
+		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			//  Account With Employee
@@ -38,8 +44,16 @@ namespace EmployeeAPI.Context
 					.WithOne(e => e.Education);
 			// Education dg University
 			modelBuilder.Entity<University>()
-				.HasMany(c => c.Education)
-				.WithOne(e => e.University);
+					.HasMany(c => c.Education)
+					.WithOne(e => e.University);
+			// Acc wuth AccRole
+			modelBuilder.Entity<AccountRole>()
+					.HasOne(a => a.Account)
+					.WithMany(b => b.AccountRole);
+			// AccRole with role
+			modelBuilder.Entity<AccountRole>()
+					.HasOne(a => a.Role)
+					.WithMany(b => b.AccountRole);
 		}
 	}
 }

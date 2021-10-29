@@ -5,20 +5,16 @@ using System.Threading.Tasks;
 
 namespace EmployeeAPI.ViewModels
 {
-	public class RegisterVM
+	public class ProfileVM
 	{
 		public string NIK { get; set; }
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
+		public string Fullname { get; set; }
 		public string Phone { get; set; }
 		public string Email { get; set; }
-		public int Salary { get; set; }
 		public DateTime BirthDate { get; set; }
-		public string Password { get; set; }
 		public string Degree { get; set; }
 		public string GPA { get; set; }
-		public int UniversityId { get; set; }
-		public int Role_Id { get; set; }
-
+		public string UniversityName { get; set; }
+		public int AccRole { get; set; }
 	}
 }

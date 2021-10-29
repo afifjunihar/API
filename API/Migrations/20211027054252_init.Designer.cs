@@ -4,14 +4,16 @@ using EmployeeAPI.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EmployeeAPI.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20211027054252_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,28 +32,6 @@ namespace EmployeeAPI.Migrations
                     b.HasKey("NIK");
 
                     b.ToTable("TB_T_Account");
-                });
-
-            modelBuilder.Entity("EmployeeAPI.Models.AccountRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("NIK")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Role_Id")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NIK");
-
-                    b.HasIndex("Role_Id");
-
-                    b.ToTable("TB_T_AccountRole");
                 });
 
             modelBuilder.Entity("EmployeeAPI.Models.Education", b =>
@@ -120,21 +100,6 @@ namespace EmployeeAPI.Migrations
                     b.ToTable("TB_T_Profiling");
                 });
 
-            modelBuilder.Entity("EmployeeAPI.Models.Role", b =>
-                {
-                    b.Property<int>("Role_Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Role_Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Role_Id");
-
-                    b.ToTable("TB_M_Role");
-                });
-
             modelBuilder.Entity("EmployeeAPI.Models.University", b =>
                 {
                     b.Property<int>("Id")
@@ -159,23 +124,6 @@ namespace EmployeeAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("EmployeeAPI.Models.AccountRole", b =>
-                {
-                    b.HasOne("EmployeeAPI.Models.Account", "Account")
-                        .WithMany("AccountRole")
-                        .HasForeignKey("NIK");
-
-                    b.HasOne("EmployeeAPI.Models.Role", "Role")
-                        .WithMany("AccountRole")
-                        .HasForeignKey("Role_Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("EmployeeAPI.Models.Education", b =>
@@ -210,8 +158,6 @@ namespace EmployeeAPI.Migrations
 
             modelBuilder.Entity("EmployeeAPI.Models.Account", b =>
                 {
-                    b.Navigation("AccountRole");
-
                     b.Navigation("Profiling");
                 });
 
@@ -223,11 +169,6 @@ namespace EmployeeAPI.Migrations
             modelBuilder.Entity("EmployeeAPI.Models.Employee", b =>
                 {
                     b.Navigation("Acc");
-                });
-
-            modelBuilder.Entity("EmployeeAPI.Models.Role", b =>
-                {
-                    b.Navigation("AccountRole");
                 });
 
             modelBuilder.Entity("EmployeeAPI.Models.University", b =>

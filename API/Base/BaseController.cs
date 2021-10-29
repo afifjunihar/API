@@ -46,9 +46,9 @@ namespace EmployeeAPI.Base
 		}
 
 		[HttpDelete("{Key}")]
-		public ActionResult<Entity> Delete(Entity entity, Key key)
+		public ActionResult<Entity> Delete(Key key)
 		{
-			var result = repository.Delete(entity, key);
+			var result = repository.Delete(key);
 			return Ok(result);
 		}
 	}

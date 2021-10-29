@@ -9,6 +9,6 @@ namespace EmployeeAPI.Repository.Interface
 		Entity Get(Key key);
 		int Insert(Entity entity);
 		int Update(Entity entity, Key key);
-		int Delete(Entity entity, Key key);
+		int Delete(Key key);
 	}
 }

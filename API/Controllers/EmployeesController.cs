@@ -2,10 +2,17 @@
 using EmployeeAPI.Models;
 using EmployeeAPI.Repository.Data;
 using EmployeeAPI.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 
 namespace EmployeeAPI.Controllers
 {
@@ -14,32 +21,95 @@ namespace EmployeeAPI.Controllers
 	public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
 	{
 		private readonly EmployeeRepository employee;
-		public EmployeesController(EmployeeRepository employeeRepository) : base (employeeRepository)
+		public IConfiguration _configuration;
+		public EmployeesController(EmployeeRepository employeeRepository, IConfiguration configuration) : base (employeeRepository)
 		{
 			this.employee = employeeRepository;
+			this._configuration = configuration;
 		}
 		[Route("Register")]
 		[HttpPost]
 		public ActionResult Register(RegisterVM entity)
 		{
 			var result = employee.Register(entity);
-			if (result > 0)
+			if (result == 4)
 			{
-				return Ok("Berhasil Registrasi");
+				return BadRequest("NIK dan NoHanphone Sudah Dipakai");
+			} else if (result == 3)
+			{
+				return BadRequest("NIK sudah dipakai");
 			}
-			return BadRequest();
+			else if (result == 2)
+			{
+				return BadRequest("No Handphone Sudah Dipakai");
+			}
+			return Ok("Berhasil Registrasi");
 		}
 
-		//[Route("Register")]
-		//[HttpGet]
-		//public ActionResult Gets()
-		//{
-		//	var result = employee.Gets();
-		//	if (result != null)
-		//	{
-		//		return Ok(result);
-		//	}
-		//	return BadRequest();
-		//}
+		[Route("Profile")]
+		[HttpGet]
+		public ActionResult GetProfile()
+		{
+			var result = employee.GetProfile();
+			return Ok(result);
+		}
+
+		[Route("Profile/{NIK}")]
+		[HttpGet]
+		public ActionResult GetProfile(string NIK)
+		{
+			var result = employee.GetProfile(NIK);
+			return Ok(result);
+		}
+
+		[Route("Login")]
+		[HttpPost]
+
+		public ActionResult Login(LoginVM loginVM)
+		{
+			var result = employee.Login(loginVM);
+			if (result == 1)
+			{
+				return NotFound("Email Belum Terdaftar");
+			} else if (result == 2)
+			{
+				return BadRequest("Password Salah");
+			}
+			// Implement JWT
+			var data = new LoginDataVM
+			{
+				Email = loginVM.Email,
+				Roles = employee.GetRole(loginVM)
+			};
+			var claims = new List<Claim>
+			{
+				new Claim("email", data.Email)
+			};
+			foreach (var item in data.Roles)
+			{
+				claims.Add(new Claim ("roles", item.ToString()));
+			}
+
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+			var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+			var token = new JwtSecurityToken(
+					_configuration["Jwt:Issuer"],
+					_configuration["Jwt:Audience"],
+					claims,
+					expires : DateTime.UtcNow.AddMinutes(10),
+					signingCredentials : signIn
+				);
+			var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+			claims.Add(new Claim("TokenSecurity", idToken.ToString()));
+			return Ok(new { status = HttpStatusCode.OK, idToken, message = "Login Sukses" });
+		}
+
+		[Authorize(Roles = "Employee")]
+		[Route("TestJWT")]
+		[HttpGet]
+		public ActionResult TestJWT()
+		{
+			return Ok("Test JWT");
+		}
 	}
 }
