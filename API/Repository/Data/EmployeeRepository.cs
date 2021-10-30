@@ -243,5 +243,50 @@ namespace API.Repository.Data
             return result;
         }
 
+        //public IEnumerable GetRole(string Email)
+        //{
+        //    var employeeData = context.Employees.ToList();
+        //    var accountRoleData = context.AccountRoles.ToList();
+        //    var roleData = context.Roles.ToList();
+
+        //    var role = from e in employeeData
+        //               join ar in accountRoleData on e.NIK equals ar.NIK into table0
+
+        //               from ar in table0
+        //               join r in roleData on ar.Role_Id equals r.Role_Id into table1
+
+        //               from r in table1
+        //               where e.Email == Email
+
+        //               select new
+        //               {
+        //                   //Email = e.Email,
+        //                   Role = r.Role_Name
+        //               };
+
+        //    return role;
+        //}
+
+        //public string GetRole(string Email)
+        //{
+        //    var getNIK = context.Employees.Where(e => e.Email == Email).FirstOrDefault();
+        //    var getRoleId = context.AccountRoles.Where(ar => ar.NIK == getNIK.NIK).FirstOrDefault();
+        //    string role = context.Roles.Where(r => r.Role_Id == getRoleId.Role_Id).FirstOrDefault().Role_Name;
+        //    return role;
+        //}
+        public string[] GetRole(LoginVM loginVM)
+        {
+            var dataExist = context.Employees.Where(fn => fn.Email == loginVM.Email).FirstOrDefault();
+            var userNIK = dataExist.NIK;
+            var userRole = context.AccountRoles.Where(fn => fn.NIK == userNIK).ToList();
+            List<string> result = new List<string>();
+            foreach (var item in userRole)
+            {
+                result.Add(context.Roles.Where(fn => fn.Role_Id == item.Role_Id).First().Role_Name);
+            }
+
+            return result.ToArray();
+        }
+
     }
 }
