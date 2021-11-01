@@ -16,12 +16,13 @@ namespace API.ViewModels
         public string Phone { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
-        public int gender { get;set;}
+        public int Gender { get;set;}
+        public int RoleId { get; set; }
         public string Password { get; set; }
 
         public int EducationId { get; set; }
         public string Degree { get; set; }
-        public string Gpa { get; set; }
+        public string Gpa { get; set; } 
 
         public int UniversityId { get; set; }
         public string Name { get; set; }

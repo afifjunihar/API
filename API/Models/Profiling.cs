@@ -17,6 +17,7 @@ namespace API.Models
         [ForeignKey("EducationId")]
         public int EducationId { get; set; }
 
+
         [JsonIgnore]
         public virtual Education Education { get; set; }
         [JsonIgnore]

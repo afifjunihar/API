@@ -24,8 +24,6 @@ namespace API.Models
         [JsonIgnore]
         public virtual University University { get; set; }
         [JsonIgnore]
-        public virtual string NIK { get; set; }
-        [JsonIgnore]
         public virtual ICollection<Profiling> Profiling { get; set; }
     }
 }

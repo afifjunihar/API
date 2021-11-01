@@ -18,6 +18,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Controllers.Base;
 using API.HashingPassword;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace API
 {
@@ -39,13 +42,37 @@ namespace API
             services.AddScoped<EducationRepository>();
             services.AddScoped<ProfilingRepository>();
             services.AddScoped<UniversityRepository>();
+            services.AddScoped<AccountRoleRepository>();
+            services.AddScoped<RoleRepository>();
             services.AddScoped<Hashing>();
-           
             services.AddDbContext<MyContext>(options =>
                      options.UseLazyLoadingProxies()
                      .UseSqlServer(Configuration.GetConnectionString("APIContext")));
             services.AddControllers().AddNewtonsoftJson(x =>
                      x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,13 +82,11 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(options => options.AllowAnyOrigin());
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

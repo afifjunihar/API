@@ -3,11 +3,17 @@ using API.Models;
 using API.Repository;
 using API.Repository.Data;
 using API.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Controllers.Base
@@ -24,9 +30,11 @@ namespace API.Controllers.Base
     public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
     {
         public readonly EmployeeRepository employee;
-        public EmployeesController(EmployeeRepository employeeRepository) : base(employeeRepository) 
+        public IConfiguration _configuration;
+        public EmployeesController(EmployeeRepository employeeRepository, IConfiguration configuration) : base(employeeRepository) 
         {
             this.employee = employeeRepository;
+            this._configuration = configuration;
         }
 
         [HttpPost]
@@ -77,14 +85,13 @@ namespace API.Controllers.Base
 
         [HttpGet]
         [Route("Registration/Profile")]
+        [Authorize(Roles = "Manajer,Director")]
         public ActionResult<Employee> GetProfile() 
         {
             try
             {
-            var result = employee.GetProfile();    
-           
-            return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result});  
-
+                var result = employee.GetProfile();               
+                return Ok(result);  
             }
             catch (Exception)
             {
@@ -96,13 +103,14 @@ namespace API.Controllers.Base
             }
         }
 
+        
         [HttpGet]
         [Route("Registration/Profile/{NIK}")]
+        [Authorize(Roles = "Employee,Manajer,Director")]
         public ActionResult Register(string NIK)
         {
             try
             {
-
                 var result = employee.GetProfile(NIK);
                 return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result });
    
@@ -122,10 +130,41 @@ namespace API.Controllers.Base
         public ActionResult Login(LoginVM login)
         {
             var checkLogin = employee.Login(login);
+
             if (checkLogin == 0)
             {
+
+                var getUserRole= employee.GetUserData(login);
                 var getFullName = employee.GetFullName(login);
-                return Ok(new { status = HttpStatusCode.OK, message = $"Login Berhasil !", greetings = $"Selamat Datang {getFullName}" });
+
+                var data = new LoginDataVM
+                {
+                    Email = login.Email,
+                    Roles = getUserRole
+                };
+
+                var claims = new List<Claim>
+                {
+                    new Claim("email", login.Email)         
+                };
+
+                foreach (var x in data.Roles) 
+                {
+                    claims.Add(new Claim("roles", x.ToString()));
+                }
+
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+                var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                        _configuration["Jwt:Issuer"],
+                        _configuration["Jwt:Audience"],
+                        claims,
+                        expires: DateTime.UtcNow.AddMinutes(10),
+                        signingCredentials: signIn
+                    );
+                var idToken = new JwtSecurityTokenHandler().WriteToken(token);
+                claims.Add(new Claim("TokenSecurity", idToken.ToString()));            
+                return Ok(new { status = HttpStatusCode.OK, message = $"Login Berhasil !", greetings = $"Selamat Datang {getFullName}", idToken });
             }
             else if (checkLogin == 1)
             {
@@ -152,7 +191,42 @@ namespace API.Controllers.Base
                 });
             }
         }
-        
+
+        [HttpGet]
+        [Authorize]
+        [Route("TestCORS")]
+        public ActionResult CORS()
+        {
+            return Ok("Test CORS Berhasil");
+        }
+
+        [HttpPost]
+        [Route("SignManager")]
+        [Authorize(Roles = "Director")]
+        public ActionResult SignManager(RegisterVM registerVM) 
+        {
+            var test = employee.SignManager(registerVM);
+            if (test == 0)
+            {
+                return Ok(new { message = "Selamat atas Pengangkatannya sebagai Manager" });
+            }
+            else if (test == 1)
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "NIK yang Anda Masukan Tidak Terdaftar"
+                });
+            }
+            else 
+            {
+                return NotFound(new
+                {
+                    status = HttpStatusCode.NotFound,
+                    message = "Terjadi Error mohon chek line 120 EmployeesRepository"
+                });
+            }
+        }
     }
  }
 
