@@ -22,6 +22,9 @@ C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.TagHelpers.input.cache
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.TagHelpers.output.cache
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.RazorCoreGenerate.cache
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Home\Ajax.cshtml.g.cs
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Home\Datatables.cshtml.g.cs
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Index.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
