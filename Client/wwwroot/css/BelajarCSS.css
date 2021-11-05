@@ -1,0 +1,73 @@
+﻿/*body {
+    min-height: 100vh;
+}
+
+#button-addon1 {
+    color: #ffc371
+}
+
+i {
+    color: #0000cc;
+    font-size: 20px
+}
+
+.form-control::placeholder {
+    font-size: 0.95rem;
+    color: #aaa;
+    font-style: italic
+}
+
+.form-control.shadow-0:focus {
+    box-shadow: none
+}
+
+.display-3 {
+    font-family: 'Sanchez', serif
+}
+
+p {
+    font-family: 'Tajawal', sans-serif
+}
+
+.lead {
+    font-family: 'Sanchez 200', serif
+}
+
+.flex-grow {
+    flex: 1;
+}*/
+
+/** {
+    border: 2px solid #ddd;
+    padding : 10px;
+    margin: 10px;
+}
+html {
+
+    margin:0;
+    padding:0;
+}
+body {
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+p#a {
+    background-color:pink;
+}
+*/
+
+/*h1#judul {
+    background-color: lightgrey;
+    left: auto;
+    right: auto;
+}*/
+
+/*div#gambar {
+    display:inline !important;
+    margin:auto;
+}*/
+
+tr#rowawal {
+    background-color :aquamarine !important; }
+

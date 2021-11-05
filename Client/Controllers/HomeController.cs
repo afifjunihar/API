@@ -23,7 +23,11 @@ namespace Client.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Ajax()
+        {
+            return View();
+        }
+        public IActionResult Datatables()
         {
             return View();
         }
