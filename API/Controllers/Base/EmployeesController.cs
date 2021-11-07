@@ -55,15 +55,15 @@ namespace API.Controllers.Base
                 }
                 else if (result == 1)
                 {
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "NIK sudah tersedia" });
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "NIK sudah tersedia" });
                 }
                 else if (result == 2)
                 {
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
                 }
                 else if (result == 3)
                 {
-                    return Ok(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
                 }
                 else 
                 {
@@ -79,6 +79,35 @@ namespace API.Controllers.Base
                     message = "Gagal menambahkan data, Cek bagian Register => Employees Controller"
                 });
             }
+
+
+        }
+
+        [HttpPut]
+        [Route("Update")]
+        public ActionResult Update(RegisterVM register)
+        {
+ 
+                var result = employee.Update(register);
+
+                if (result == 0)
+                {
+                    return BadRequest(new
+                    {
+                        status = HttpStatusCode.BadRequest,
+                        message = "Gagal menambahkan data, Primary Key tidak boleh kosong"
+                    });
+                }
+                else if (result == 1)
+                {
+                    return Ok("Berhasil Update Data");
+                }
+                else 
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Data gagal diubah" });
+                };
+            
+           
 
 
         }
@@ -198,6 +227,26 @@ namespace API.Controllers.Base
         public ActionResult CORS()
         {
             return Ok("Test CORS Berhasil");
+        }
+
+        [HttpDelete]
+        [Route("Delete/{NIK}")]
+        public ActionResult DeleteAkun(string NIK)
+        {
+            var result = employee.Delete(NIK);
+            if (result == 0)
+            {
+                return Ok("Data Berhasil di Hapus");
+
+            }
+            else 
+            {
+                return BadRequest(new
+                {
+                    status = HttpStatusCode.BadRequest,
+                    message = "Gagal menghapus data, Primary Key tidak terdaftar"
+                });
+            }
         }
 
         [HttpPost]

@@ -1,5 +1,4 @@
 ﻿
-
 //using database
 $(document).ready(function () {
   
@@ -49,11 +48,17 @@ $(document).ready(function () {
             },
             {
                 "data": "gender"
+            },
+            {
+                "data": "",
+                "render": function (data, type, row, meta) {
+                    return `<button type="button" class="btn btn-primary" onclick="hapusPegawai('${row['nik']}');">Hapus</button>`
+                }
             }
         ]
     });
 
-    var check = $("#inputForm").validate({
+    $("#inputForm").validate({
         // Specify validation rules
         rules: {
             nik: "required",
@@ -75,93 +80,213 @@ $(document).ready(function () {
                 minlength: 5
             }
         },
-        messages: {
-            nik: "Please enter NIK",
-            firstname: "Please enter your First Name",
-            lastname: "Please enter your Last Name",
-            phone: "Please enter your Phone Correctly",
-            salary: "Please enter your Salary ",
-            gender: "Please enter your Gender",
-            degree: "Please provide your Degree",
-            birthDate: "Please provide your Birth Date",
-            gpa: "Please enter your Gpa",
-            universiyId: "Please provide your university",
-            password: {
-                required: "Please provide a password",
-                minlength: "Your password must be at least 5 characters long"
-            },
-            email: "Please enter a valid email address"
+        errorPlacement: function (error, element) {
+        },
+        highlight: function (element) {
+            $(element).closest('.form-control').addClass('is-invalid');
+            $(element).closest('#group').addClass('invalid-feedback');
+            var n = $(element).attr("name");
+            if (n === "nik") { $(element).attr("placeholder", "Please enter your NIK"); }
+            if (n === "firstName") { $(element).attr("placeholder", "Please enter your First Name"); }
+            if (n === "lastName") { $(element).attr("placeholder", "Please enter your Last Name"); }
+            if (n === "phone") { $(element).attr("placeholder", "Please enter your Phone Correctly"); }
+            if (n === "salary") { $(element).attr("placeholder", "Please enter your Salary"); }
+            if (n === "gpa") { $(element).attr("placeholder", "Please enter your Gpa"); }
+            if (n === "degree") { $(element).attr("placeholder", "Please provide your Degree"); }
+            if (n === "password") { $(element).attr("placeholder", "Please provide a password"); }
+            if (n === "email") { $(element).attr("placeholder", "Please enter a valid email address"); }
+         },
+        unhighlight: function (element) {
+            $(element).closest('.form-control').removeClass('is-invalid');
+            $(element).closest('#group').addClass('invalid-feedback');
         }
-    });
+    }); 
+});
 
-    //$('#btnsubmit').on('click', function () {
-    //    $("#inputForm").valid();
-    //})
+function Validate() {
+    var ini = $("#inputForm").valid();
+    console.log(ini);
 
-    $('#btnsubmit').click(function () {
-        var ini = $("#inputForm").valid();
-        console.log(ini);
-        if (ini === true) {
-            Insert();
-        }
-        else
-        {
-            alertGagal();
-        }
-    });
-
-    function Insert(obj) {
-
-        var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
-        //ini ngambil value dari tiap inputan di form nya
-        obj.NIK = $("#nik").val();
-        obj.FirstName = $("#firstName").val();
-        obj.LastName = $("#lastName").val();
-        obj.Phone = $("#phone").val();
-        obj.salary = $("#salary").val();
-        obj.Birthdate = $("#birthDate").val();
-        obj.Email = $("#email").val();
-        obj.Gender = $("#gender").val();
-        obj.Password = $("#password").val();
-        obj.Degree = $("#degree").val();
-        obj.UniversityId = $("#universiyId").val();
-        console.log(obj);
-        $.ajax({
-            url: "https://localhost:44319/API/Employees/Registration",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'},
-            type: 'POST',
-            data: JSON.stringify(obj)
-
-            }).done((result) => {
-                alertBerhasil();
-                $('#tableEmployee').DataTable().ajax.reload();
-
-            }).fail((error) => {
-                alertGagal();
-                console.log(error);
-        })
+    if (ini === true) {
+        get();
     }
+    else {
+        alertGagal(0);
+    }
+};
 
-    function alertBerhasil() {
+function get()
+{
+    var NIK = $("#nik").val();
+    $.ajax({
+        url: `https://localhost:44319/API/Employees/${NIK}`,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'GET'
+    }).done((result) => {
+        pilihUpdate(true);
+    }).fail((error) => {
+        pilihUpdate(false);
+    });
+}
+
+function pilihUpdate(bool) {
+    if (bool == true) {
+        Update();
+    }
+    else {
+        Insert();
+    }
+}
+function Insert() {
+    var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
+    //ini ngambil value dari tiap inputan di form nya
+    obj.NIK = $("#nik").val();
+    obj.FirstName = $("#firstName").val();
+    obj.LastName = $("#lastName").val();
+    obj.Phone = $("#phone").val();
+    obj.salary = $("#salary").val();
+    obj.Birthdate = $("#birthDate").val();
+    obj.Email = $("#email").val();
+    obj.Gender = $("#gender").val();
+    obj.Password = $("#password").val();
+    obj.Degree = $("#degree").val();
+    obj.Gpa = $("#gpa").val();
+    obj.UniversityId = $("#universiyId").val();
+    console.log(obj);
+    $.ajax({
+        url: "https://localhost:44319/API/Employees/Registration",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'POST',
+        data: JSON.stringify(obj)
+
+    }).done((result) => {
+        alertBerhasil(1);
+        $('#tableEmployee').DataTable().ajax.reload();
+
+    }).fail((error) => {
+        alertGagal(1);
+    });
+};
+
+function Update() {
+    var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
+    //ini ngambil value dari tiap inputan di form nya
+    obj.NIK = $("#nik").val();
+    obj.FirstName = $("#firstName").val();
+    obj.LastName = $("#lastName").val();
+    obj.Phone = $("#phone").val();
+    obj.salary = $("#salary").val();
+    obj.Birthdate = $("#birthDate").val();
+    obj.Email = $("#email").val();
+    obj.Gender = $("#gender").val();
+    obj.Password = $("#password").val();
+    obj.Degree = $("#degree").val();
+    obj.Gpa = $("#gpa").val();
+    obj.UniversityId = $("#universiyId").val();
+    console.log(obj);
+
+    $.ajax({
+        url: "https://localhost:44319/API/Employees/Update",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'PUT',
+        data: JSON.stringify(obj)
+    }).done((result) => {
+        alertBerhasil(2);
+        $('#tableEmployee').DataTable().ajax.reload();
+
+    }).fail((error) => {
+        alertGagal(2);
+    });
+};
+
+function alertBerhasil(pilih) {
+    if (pilih === 1) {
         Swal.fire(
             'Good job!',
             'Pendaftaran Berhasil!',
             'success'
-         );
+        );
     }
-    function alertGagal() {
+    else if (pilih === 2) {
+        Swal.fire(
+            'Good job!',
+            'Data Berhasil Diubah! ',
+            'success'
+        );
+    }
+    else if (pilih === 3)
+    {
+        Swal.fire(
+            'Good job!',
+            'Data Berhasil di Hapus! ',
+            'success'
+        );
+    }
+};
+
+function alertGagal(pilih) {
+    if (pilih === 1) {
         Swal.fire({
-            icon: 'Error',
+            icon: 'error',
             title: 'Oops...',
             text: 'Pendaftaran Gagal!',
             footer: '<a href="">Why do I have this issue?</a>'
         });
     }
-});
+    else if (pilih === 2) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Data Gagal Diubah!',
+            footer: '<a href="">Why do I have this issue?</a>'
+        });
+    }
+    else if (pilih === 3) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Data Gagal DiHapus!',
+            footer: '<a href="">Why do I have this issue?</a>'
+        });
+    }
+    else  {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Harap Masukan Seluruh Data',
+            footer: '<a href="">Why do I have this issue?</a>'
+        });
+    }
+};
 
+function hapusPegawai(nik)
+{
+    var obj = new Object();
+    obj.nik = nik;
+    $.ajax({
+        url: `https://localhost:44319/API/Employees/Delete/${nik}`,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'DELETE',
+        data: JSON.stringify(obj)
+    }).done((result) => {
+        alertBerhasil(3);
+        $('#tableEmployee').DataTable().ajax.reload();
 
-
+    }).fail((error) => {
+        alertGagal(3);
+    });
+}
 
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Models
 {
-    [Table("Tb_T_Employee")]
+    [Table("Tb_T_Account")]
     public class Account
     {
 

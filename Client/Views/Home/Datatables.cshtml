@@ -10,7 +10,7 @@
     <h1>List Pegawai</h1>
 </div>
 <div class=" text-left mt-2 mb-3">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">Submit Form</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">Tambah/Edit Pegawai</button>
 </div>
 
 <table class="table table-borderless" id="tableEmployee">
@@ -21,6 +21,7 @@
             <th>Salary</th>
             <th>Phone</th>
             <th>Gender</th>
+            <th>Hapus</th>
         </tr>
     </thead>
     <tbody class="align-middle"></tbody>
@@ -38,7 +39,7 @@
             </div>
 
             <div class="modal-body needs-validation" novalidate>
-                <form id="inputForm" name="inputForm">
+                <form class="is-invalid" id="inputForm" name="inputForm">
                     <div class="form-row">
                         <div class="col mb-3">
                             <label for="nik">NIK</label>
@@ -78,11 +79,12 @@
                         </div>
                         <div class="form-group mr-3">
                             <label for="gender">Gender</label>
-                            <select id="gender" class="form-control" name="gender">
-                                <option>Choose...</option>
+                            <select id="gender" class="custom-select" name="gender">
+                                <option value="">Choose...</option>
                                 <option value="0">Laki-Laki</option>
                                 <option value="1">Perempuan</option>
                             </select>
+                            <div class="invalid-feedback" id="group"></div>
                         </div>
                     </div>
                     <div class="row mb-3">
@@ -93,18 +95,19 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="universiyId">Universitas</label>
-                        <select id="universiyId" class="form-control" name="universityId">
-                            <option selected>Choose...</option>
+                        <select id="universiyId" class="custom-select" name="universityId">
+                            <option value"">Choose...</option>
                             <option value="1005">Universitas Indonesia</option>
                             <option value="1006">Universitas Andalas</option>
                             <option value="1007">Universitas Trisakti</option>
                             <option value="1008">Universitas Gajah Mada</option>
                         </select>
+                        <div class="invalid-feedback" id="group"></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <label for="degree">Gelar</label>
-                            <select id="degree" class="form-control" name="degree" >
+                            <select id="degree" class="form-control" name="degree">
                                 <option selected>Gelar</option>
                                 <option value="Diploma I">Ahli Pratama</option>
                                 <option value="Diploma II">Ahli Muda</option>
@@ -114,6 +117,7 @@
                                 <option value="S2">Magister</option>
                                 <option value="S3">Doktor</option>
                             </select>
+                            <div class="" id="group"></div>
                         </div>
                         <div class="col">
                             <label for="gpa">GPA</label>
@@ -125,8 +129,10 @@
                 <div class="modal-footer">
                     <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
+                </div> 
             </div>
         </div>
     </div>
 </div>
+
+ 

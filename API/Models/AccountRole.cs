@@ -13,11 +13,9 @@ namespace API.Models
         [Key]
         public int AccountRoleId { get; set; }
         [ForeignKey("RoleId")]
-        [JsonIgnore]
-        public virtual int RoleId { get; set; }
+        public int RoleId { get; set; }
         [ForeignKey("NIK")]
-        [JsonIgnore]
-        public virtual string NIK { get; set; }
+        public string NIK { get; set; }
 
         [JsonIgnore]
         public virtual Role Role { get; set; }

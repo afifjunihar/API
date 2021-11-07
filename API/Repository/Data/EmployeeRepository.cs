@@ -148,9 +148,65 @@ namespace API.Repository.Data
                     RoleId = entity.RoleId
                 };
                 eContext.AccountRoles.Add(empRole);
+
                 eContext.Employees.Add(employee);
                 var result = eContext.SaveChanges();
                 return result;
+            }
+        }
+
+        public int Update(RegisterVM entity)
+        {
+            var checkPhone = eContext.Employees.Where(p => p.Phone == entity.Phone).FirstOrDefault();
+            var checkEmail = eContext.Employees.Where(p => p.Email == entity.Email).FirstOrDefault();
+            var checkNik = eContext.Employees.Find(entity.NIK);
+            if (entity.NIK == string.Empty)
+            {
+                return 0;
+            }
+            else if (checkEmail != null)
+            {
+                return 2;
+            }
+            else if (checkPhone != null)
+            {
+                return 3;
+            }
+            else if (checkNik != null)
+            {
+                eContext.Entry(checkNik).State = EntityState.Detached;
+                var employee = new Employee
+                {
+                    NIK = entity.NIK,
+                    FirstName = entity.FirstName,
+                    LastName = entity.LastName,
+                    Phone = entity.Phone,
+                    Salary = entity.Salary,
+                    BirthDate = entity.BirthDate,
+                    Email = entity.Email,
+                    Gender = (Gender)entity.Gender,
+                    Account = new Account
+                    {
+                        NIK = entity.NIK,
+                        Password = Hashing.HashPassword(entity.Password),
+                        Profiling = new Profiling
+                        {
+                            NIK = entity.NIK,
+                            Education = new Education
+                            {
+                                Degree = entity.Degree,
+                                Gpa = entity.Gpa,
+                                UniversityId = entity.UniversityId
+                            }
+                        }
+                    }
+                };
+                eContext.Entry(employee).State = EntityState.Modified;
+                eContext.SaveChanges();
+                return 1;
+            }
+            else {
+                return 4;
             }
         }
 
@@ -250,23 +306,22 @@ namespace API.Repository.Data
         {
             var delete = eContext.Employees.Find(NIK);
             var findProfiling = eContext.Profilings.Find(NIK);
+            var findAccount = eContext.Accounts.Find(NIK);
             var findEdu = eContext.Educations.Find(findProfiling.EducationId);
 
-            //foreach (var x in eContext.AccountRoles)
-            //{
-            //    if (x.NIK == NIK)
-            //    {
-            //        var fingAccRole = eContext.AccountRoles.Where(p => p.NIK == NIK).FirstOrDefault();
-            //        var accrole = eContext.AccountRoles.Find(fingAccRole.AccountRoleId);
-            //        eContext.AccountRoles.Remove(accrole);
-            //        break;
-            //    }
-            //}
+            int roleNumbers = eContext.AccountRoles.Where(p => p.NIK == NIK).Count();
+            for (int i = 0; i < roleNumbers; i++)
+            {
+                var findRoles = eContext.AccountRoles.Where(p => p.NIK == NIK).FirstOrDefault();
+                eContext.AccountRoles.Remove(findRoles);
+                eContext.SaveChanges();
 
+            }
+            eContext.Accounts.Remove(findAccount);
             eContext.Employees.Remove(delete);
             eContext.Educations.Remove(findEdu);
-            var result = eContext.SaveChanges();
-            return result;
+            eContext.SaveChanges();
+            return 0;
         }
     }
 }
