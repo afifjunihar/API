@@ -1,8 +1,39 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Homo Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@*<div class="header">
+        <h1>Judul</h1>
+    </div>
+    <p>Ini paragraf</p>
+    <a href="">Link 1</a>
+    <a href="">Link 2</a>
+    <a href="">Link 3</a>
+
+    <h1>Grid Layout</h1>
+
+    <p>This grid layout contains six columns and three rows:</p>
+
+    <div class="grid-container">
+
+        <div class="item1">Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.</div>
+        <div class="item2">
+            Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.
+        </div>
+        <div class="item3"><img src="https://www.static-src.com/wcsstore/Indraprastha/images/catalog/full//90/MTA-10603285/bandai_bandai_hobby_-_mobile_suit_gundam_-_1-144_rx-78-2_gundam-_bandaispirits_entry_grade_full04_kmpftj94.jpg" alt="Alternate Text" width="200px" height="300px" /></div>
+    </div>
+    <div></div>*@
+
+
+<div class="row mt-5">
+    <div class="col-sm text-center">
+        <div id="pokeButtonHome" class="mx-auto mt-5" onclick="location.href='home/ajax'"></div> 
+        @*<button type="button" class="btn btn-primary text-center mt-3" onclick="location.href='home/ajax'">Klik untuk ke halaman Pokemon</button>*@  
+
+    </div>
+    <div class="col-sm text-center">
+    <div id="employeeButtonHome" class="mx-auto mt-5" onclick="location.href='home/datatable'"></div>
+    @*<button type="button" class="btn btn-primary mt-3" onclick="location.href='home/datatable'">Klik untuk ke halaman Employee</button>*@
+    </div>
+
 </div>

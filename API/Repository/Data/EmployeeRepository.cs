@@ -2,6 +2,7 @@
 using API.HashPassword;
 using API.Models;
 using API.ViewModel;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -65,6 +66,7 @@ namespace API.Repository.Data
                     BirthDate = registerVM.BirthDate,
                     Phone = registerVM.Phone,
                     Salary = registerVM.Salary,
+                    Gender = registerVM.Gender,
                     Email = registerVM.Email,
                     Account = new Account
                     {
@@ -100,6 +102,64 @@ namespace API.Repository.Data
             }
         }
 
+        public int UpdateEmployee(RegisterVM registerVM)
+        {
+            var checkEmail = context.Employees.Where(p => p.Email == registerVM.Email).Count();
+            var checkPhone = context.Employees.Where(p => p.Phone == registerVM.Phone).Count();
+            if (checkEmail > 1)
+            {
+                return 2;
+            }
+            else if (checkPhone > 1)
+            {
+                return 3;
+            }
+            else
+            {
+                string hashPassword = Hashing.HashPassword(registerVM.Password);
+                var empResult = new Employee
+                {
+                    NIK = registerVM.NIK,
+                    FirstName = registerVM.FirstName,
+                    LastName = registerVM.LastName,
+                    BirthDate = registerVM.BirthDate,
+                    Phone = registerVM.Phone,
+                    Salary = registerVM.Salary,
+                    Gender = registerVM.Gender,
+                    Email = registerVM.Email,
+                    Account = new Account
+                    {
+                        NIK = registerVM.NIK,
+                        Password = hashPassword,
+                        Profiling = new Profiling
+                        {
+                            NIK = registerVM.NIK,
+                            Education = new Education
+                            {
+                                Degree = registerVM.Degree,
+                                GPA = registerVM.GPA,
+                                University_Id = registerVM.UniversityId
+                            }
+                        },
+                    }
+                };
+
+                if (registerVM.Role_Id == 0)
+                {
+                    registerVM.Role_Id = 1;
+                }
+
+                var empRole = new AccountRole
+                {
+                    NIK = registerVM.NIK,
+                    Role_Id = registerVM.Role_Id
+                };
+
+                context.Entry(empResult).State = EntityState.Modified;
+                var result = context.SaveChanges();
+                return 4;
+            }
+        }
 
         public dynamic GetProfile()
         {
@@ -180,14 +240,16 @@ namespace API.Repository.Data
                           {
                               Role = r.Role_Name,
                               NIK = e.NIK,
-                              Fullname = e.FirstName + " " + e.LastName,
+                              Firstname = e.FirstName,
+                              Lastname = e.LastName,
                               Phone = e.Phone,
                               Birthdate = e.BirthDate,
                               Salary = e.Salary,
                               Email = e.Email,
                               Degree = ed.Degree,
                               GPA = ed.GPA,
-                              University = uni.Name
+                              University = uni.Name,
+                              Gender =  e.Gender
                           };
 
             return profile;

@@ -50,7 +50,7 @@ namespace API
             //add CORS
             services.AddCors(c =>
             {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             });
 
             //add JWT
@@ -83,7 +83,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors(options => options.AllowAnyOrigin());
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 

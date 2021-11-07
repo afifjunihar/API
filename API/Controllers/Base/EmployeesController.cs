@@ -37,15 +37,15 @@ namespace API.Controllers.Base
             var result = employee.Register(registerVM);
             if (result == 1)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, message = "NIK sudah terdaftar" });
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "NIK sudah terdaftar" });
             }
             else if (result == 2)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
             }
             else if (result == 3)
             {
-                return Ok(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
             }
             else
             {
@@ -53,6 +53,31 @@ namespace API.Controllers.Base
             }
 
         }
+
+        [Route("Register")]
+        [HttpPut]
+        public ActionResult UpdateEmployee(RegisterVM registerVM)
+        {
+            var result = employee.UpdateEmployee(registerVM);
+            if (result == 1)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "NIK sudah terdaftar" });
+            }
+            else if (result == 2)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email sudah terdaftar" });
+            }
+            else if (result == 3)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Nomor telepon sudah terdaftar" });
+            }
+            else
+            {
+                return Ok(new { status = HttpStatusCode.OK, message = "Registrasi Berhasil" });
+            }
+
+        }
+
         [Authorize(Roles = "Director, Manager")]
         [Route("Profile")]
         [HttpGet]
@@ -61,7 +86,7 @@ namespace API.Controllers.Base
             return Ok(employee.GetProfile());
         }
 
-        [Authorize(Roles = "Employee, Manager, Director")]
+        //[Authorize(Roles = "Employee, Manager, Director")]
         [Route("Profile/{nik}")]
         [HttpGet]
         public ActionResult GetProfileInfo(string nik)
