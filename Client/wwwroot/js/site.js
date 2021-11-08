@@ -178,8 +178,8 @@ $(document).ready(function () {
             {
                 "data": "",
                 "render": function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-danger" onclick="deleteEmployee('${row['nik']}')">Delete</button>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegister" onclick="prefillEmployee('${row['nik']}')">Edit</button>`;
+                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegister" onclick="prefillEmployee('${row['nik']}')">Edit</button>
+                            <button type = "button" class="btn btn-circle btn-danger" onclick = "deleteEmployee('${row['nik']}')" > <i class="fas fa-trash"></i></button >`;
                 }
             }
         ]
@@ -277,8 +277,8 @@ function InsertData() {
             'Registrasi brhasil',
             'success'
         );
+        $('#modalRegister').modal('toggle');
         $("#employeeData").DataTable().ajax.reload();
-        employeeTable.ajax.reload();
     }).fail((error) => {
         Swal.fire(
             'Error',
@@ -292,9 +292,19 @@ function InsertData() {
 
 function submitEmployee() {
     var ini = $("#register").valid();
+    var isedit = $("#isEdit").val()
     console.log(ini);
+    console.log(isedit);
     if (ini === true) {
-        InsertData();
+        if (isedit === "") {
+            console.log("masuk ke insert biasa")
+            InsertData();   
+        }
+        else if (isedit === 'true') {
+            console.log("masuk ke put")
+            PutData();
+
+        }
     }
     else {
         Swal.fire(
@@ -303,6 +313,7 @@ function submitEmployee() {
             'error'
         );
     }
+    console.log("kagak masuk kemana mana")
 }
 
 function prefillEmployee(nikdata) {
@@ -317,15 +328,32 @@ function prefillEmployee(nikdata) {
             $("#inputPhone").val(result[0].phone);
             $("#inputBOD").val(result[0].birthdate.substr(0,10));
             $("#inputSalary").val(result[0].salary);
-            $("#inputPassword").val();
+            $("#inputPassword").val("");
             $("#inputDegree").val(result[0].degree);
             $("#inputGPA").val(result[0].gpa);
             $("#inputUniversity").val();
-            $('input[name="genderOptions"]').val();
-            
+            $("input[name='genderOptions'][value=" + result[0].gender + "]").prop('checked', true);
+            $("#inputNIK").prop("readonly", true);
+            $('#isEdit').val(true);
         }
     })
+}
 
+function clearEmployee() {
+    $("#inputNIK").val("");
+    $("#inputFirstName").val("");
+    $("#inputLastName").val("");
+    $("#inputEmail").val("");
+    $("#inputPhone").val("");
+    $("#inputBOD").val("");
+    $("#inputSalary").val("");
+    $("#inputPassword").val("");
+    $("#inputDegree").val("");
+    $("#inputGPA").val("");
+    $("#inputUniversity").val();
+    $("input[name='genderOptions']").prop("checked", false);
+    $("#inputNIK").prop("readonly", false);
+    $('#isEdit').val("");
 }
 
 function deleteEmployee(nik) {
@@ -360,4 +388,49 @@ function deleteEmployee(nik) {
 
         }
     })
+}
+
+function PutData() {
+    var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
+    //ini ngambil value dari tiap inputan di form nya
+    obj.NIK = $("#inputNIK").val();
+    obj.FirstName = $("#inputFirstName").val();
+    obj.LastName = $("#inputLastName").val();
+    obj.Email = $("#inputEmail").val();
+    obj.Phone = $("#inputPhone").val();
+    obj.BirthDate = $("#inputBOD").val();
+    obj.Salary = Number($("#inputSalary").val());
+    obj.Password = $("#inputPassword").val();
+    obj.Degree = $("#inputDegree").val();
+    obj.GPA = $("#inputGPA").val();
+    obj.UniversityId = Number($("#inputUniversity").val());
+    obj.Gender = $('input[name="genderOptions"]').val();
+    console.log(obj);
+
+    $.ajax({
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        'url': "https://localhost:44393/API/Employees/Register/",
+        'type': "PUT",
+        'data': JSON.stringify(obj),
+        'dataType': 'json'
+    }).done((result) => {
+        Swal.fire(
+            'Success',
+            'Edit brhasil',
+            'success'
+        );
+        $('#modalRegister').modal('toggle');
+        $("#employeeData").DataTable().ajax.reload();
+    }).fail((error) => {
+        Swal.fire(
+            'Error',
+            'Terjadi kesalahan',
+            'error'
+        );
+    })
+
+    //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
 }

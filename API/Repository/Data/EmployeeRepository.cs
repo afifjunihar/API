@@ -104,6 +104,8 @@ namespace API.Repository.Data
 
         public int UpdateEmployee(RegisterVM registerVM)
         {
+            var checkNIK = context.Employees.Find(registerVM.NIK);
+            var checkNIK2 = context.Employees.Where(p => p.NIK == registerVM.NIK);
             var checkEmail = context.Employees.Where(p => p.Email == registerVM.Email).Count();
             var checkPhone = context.Employees.Where(p => p.Phone == registerVM.Phone).Count();
             if (checkEmail > 1)
@@ -116,6 +118,7 @@ namespace API.Repository.Data
             }
             else
             {
+                context.Entry(checkNIK).State = EntityState.Detached;
                 string hashPassword = Hashing.HashPassword(registerVM.Password);
                 var empResult = new Employee
                 {
@@ -148,12 +151,6 @@ namespace API.Repository.Data
                 {
                     registerVM.Role_Id = 1;
                 }
-
-                var empRole = new AccountRole
-                {
-                    NIK = registerVM.NIK,
-                    Role_Id = registerVM.Role_Id
-                };
 
                 context.Entry(empResult).State = EntityState.Modified;
                 var result = context.SaveChanges();
