@@ -12,8 +12,6 @@ API/obj/Debug/netcoreapp3.0/API.csproj.FileListAbsolute.txt
 API/obj/Debug/netcoreapp3.0/API.GeneratedMSBuildEditorConfig.editorconfig
 *.cache
 API/obj/Debug/
-API/Migrations
-Client/wwwroot
 Client/obj
 Client/bin
 API/bin/Debug/netcoreapp3.0/API.exe
