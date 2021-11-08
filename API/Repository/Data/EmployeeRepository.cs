@@ -157,20 +157,11 @@ namespace API.Repository.Data
 
         public int Update(RegisterVM entity)
         {
-            var checkPhone = eContext.Employees.Where(p => p.Phone == entity.Phone).FirstOrDefault();
-            var checkEmail = eContext.Employees.Where(p => p.Email == entity.Email).FirstOrDefault();
+
             var checkNik = eContext.Employees.Find(entity.NIK);
             if (entity.NIK == string.Empty)
             {
                 return 0;
-            }
-            else if (checkEmail != null)
-            {
-                return 2;
-            }
-            else if (checkPhone != null)
-            {
-                return 3;
             }
             else if (checkNik != null)
             {
@@ -206,7 +197,7 @@ namespace API.Repository.Data
                 return 1;
             }
             else {
-                return 4;
+                return 2;
             }
         }
 

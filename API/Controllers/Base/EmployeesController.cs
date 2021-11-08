@@ -135,7 +135,7 @@ namespace API.Controllers.Base
         
         [HttpGet]
         [Route("Registration/Profile/{NIK}")]
-        [Authorize(Roles = "Employee,Manajer,Director")]
+        //[Authorize(Roles = "Employee,Manajer,Director")]
         public ActionResult Register(string NIK)
         {
             try

@@ -21,7 +21,7 @@
             <th>Salary</th>
             <th>Phone</th>
             <th>Gender</th>
-            <th>Hapus</th>
+            <th>Option</th>
         </tr>
     </thead>
     <tbody class="align-middle"></tbody>
@@ -59,11 +59,21 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="phone">Phone Number</label>
-                            <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">+62</div>
+                                </div>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
+                            </div>                          
                         </div>
                         <div class="col">
                             <label for="salary">Gaji</label>
-                            <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">Rp.</div>
+                                </div>
+                                <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary">                               
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3">

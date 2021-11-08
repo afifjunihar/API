@@ -52,7 +52,8 @@ $(document).ready(function () {
             {
                 "data": "",
                 "render": function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-primary" onclick="hapusPegawai('${row['nik']}');">Hapus</button>`
+                    return `<button type="button" class="btn btn-danger" onclick="hapusPegawai('${row['nik']}');">Hapus</button>
+                            <button type="button" class="btn btn-warning" onclick="Edit('${row['nik']}');" data-toggle="modal" data-target="#formModal">Edit</button>`
                 }
             }
         ]
@@ -173,6 +174,68 @@ function Insert() {
         alertGagal(1);
     });
 };
+
+function Edit(nik) {  
+    
+    $.ajax({
+        url: `https://localhost:44319/API/Employees/${nik}`,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'GET',
+        success: function (data) {
+            var gender = pilihOption(`${data.result.gender}`);
+            console.log(gender);
+            $("#nik").val(`${data.result.nik}`);
+            $("#firstName").val(`${data.result.firstName}`);
+            $("#lastName").val(`${data.result.lastName}`);
+            $("#phone").val(`${data.result.phone}`);
+            $("#salary").val(`${data.result.salary}`);
+            $("#email").val(`${data.result.email}`);
+            $("#gender").val(gender);
+        }
+    });
+
+    $.ajax({
+        url: `https://localhost:44319/API/Employees/Registration/Profile/${nik}`,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        type: 'GET',
+        success: function (data) {
+            var universityId = pilihOption(`${data.result.name}`);
+            console.log(universityId);
+            $("#universiyId").val(universityId);
+            $("#degree").val(`${data.result.degree}`);
+            $("#gpa").val(`${data.result.gpa}`);
+           
+        }          
+    });
+}
+
+function pilihOption(option) {
+    if (option === "Male") {
+        return 0;
+    }
+    else if (option === "Female") {
+        return 1;
+    }
+    else if (option === "Universitas Indonesia")
+    {
+        return 1005;
+    }
+    else if (option === "Universitas Andalas") {
+        return 1006;
+    }
+    else if (option === "Universitas Trisakti") {
+        return 1007;
+    }
+    else if (option === "Universitas Gajah Mada") {
+        return 1008;
+    }
+}
 
 function Update() {
     var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
