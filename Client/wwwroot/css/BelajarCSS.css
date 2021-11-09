@@ -71,3 +71,17 @@ p#a {
 tr#rowawal {
     background-color :aquamarine !important; }
 
+#indexGambar img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    max-height: 300px;
+}
+
+.center {
+    display: block;
+    margin-top : 30px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}

@@ -1,13 +1,12 @@
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.dll
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.Views.dll
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\appsettings.json
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\assets\vendor\fontawesome-free\package.json
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.exe
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.deps.json
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.json
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.runtimeconfig.dev.json
-C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.dll
-C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.pdb
-C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.Views.dll
-C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.Views.pdb
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.csproj.AssemblyReference.cache
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.AssemblyInfoInputs.cache
@@ -27,6 +26,7 @@ C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Index.cshtml.g.cs
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout - Copy.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Razor\Views\TestCORS\Index.cshtml.g.cs
@@ -38,4 +38,6 @@ C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.dll
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.pdb
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.genruntimeconfig.cache
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.pdb
+C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\bin\Debug\netcoreapp3.1\Client.Views.pdb
 C:\Users\Afif Junihar Fakri\OneDrive - UNIVERSITAS INDONESIA\Kerja\Kerja Bareng\API\Client\obj\Debug\netcoreapp3.1\Client.csproj.CopyComplete

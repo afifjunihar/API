@@ -1,15 +1,30 @@
 ﻿
 //using database
-$(document).ready(function () {
-  
+$(document).ready(function () {  
     $('#tableEmployee').DataTable({
-
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                name: 'excel',
+                title: 'Employee',
+                sheetName: 'Employee',
+                text: '',
+                className: 'buttonsToHide fa fa-download btn-default',
+                filename: 'Data',
+                autoFilter: true,
+                exportOptions: {
+                    columns: [0, 1, 2, 3, 4]
+                }
+            }
+        ],
+        //export option => untuk memilih yang mau di download apa aja
         'ajax': {
             'url':"https://localhost:44319/API/Employees",
             'dataSrc':'result'
         },
-        "columnDefs": [
-            { "className": "dt-center", "targets": "_all" }
+        'columnDefs': [
+            { "className": "dt-center", "targets": "_all", "orderable": false }
         ],
         'columns': [
             {
@@ -52,12 +67,15 @@ $(document).ready(function () {
             {
                 "data": "",
                 "render": function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-danger" onclick="hapusPegawai('${row['nik']}');">Hapus</button>
-                            <button type="button" class="btn btn-warning" onclick="Edit('${row['nik']}');" data-toggle="modal" data-target="#formModal">Edit</button>`
+                    return `<button type="button" class="btn btn-warning" onclick="Edit('${row['nik']}');" data-toggle="modal" data-target="#formModal"><i class='fas fa-edit'></i></button>
+<button type="button" class="btn btn-danger" onclick="hapusPegawai('${row['nik']}');"><i class="fas fa-trash"></i></button>`
+
                 }
             }
         ]
     });
+
+    table.buttons('.buttonsToHide').nodes().addClass('hidden');
 
     $("#inputForm").validate({
         // Specify validation rules
@@ -85,6 +103,8 @@ $(document).ready(function () {
         },
         highlight: function (element) {
             $(element).closest('.form-control').addClass('is-invalid');
+            $(element).closest('.form-group').addClass('is-invalid');
+
             $(element).closest('#group').addClass('invalid-feedback');
             var n = $(element).attr("name");
             if (n === "nik") { $(element).attr("placeholder", "Please enter your NIK"); }
@@ -99,7 +119,8 @@ $(document).ready(function () {
          },
         unhighlight: function (element) {
             $(element).closest('.form-control').removeClass('is-invalid');
-            $(element).closest('#group').addClass('invalid-feedback');
+            $(element).closest('.form-group').removeClass('is-invalid');
+            $(element).closest('#group').removeClass('invalid-feedback');
         }
     }); 
 });
@@ -175,8 +196,7 @@ function Insert() {
     });
 };
 
-function Edit(nik) {  
-    
+function Edit(nik) {      
     $.ajax({
         url: `https://localhost:44319/API/Employees/${nik}`,
         headers: {
@@ -196,7 +216,6 @@ function Edit(nik) {
             $("#gender").val(gender);
         }
     });
-
     $.ajax({
         url: `https://localhost:44319/API/Employees/Registration/Profile/${nik}`,
         headers: {
@@ -214,6 +233,8 @@ function Edit(nik) {
         }          
     });
 }
+
+function View(nik) { }
 
 function pilihOption(option) {
     if (option === "Male") {

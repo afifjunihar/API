@@ -3,29 +3,42 @@
 *@
 @{
     ViewData["Title"] = "Datatables";
+    Layout = "_Layout - Copy";
 }
 
 
 <div class="text-center mt-3 mb-4">
     <h1>List Pegawai</h1>
 </div>
-<div class=" text-left mt-2 mb-3">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal">Tambah/Edit Pegawai</button>
-</div>
 
-<table class="table table-borderless" id="tableEmployee">
-    <thead>
-        <tr class="font-weight-bold " id="rowawal">
-            <th>NIK</th>
-            <th>Full Name</th>
-            <th>Salary</th>
-            <th>Phone</th>
-            <th>Gender</th>
-            <th>Option</th>
-        </tr>
-    </thead>
-    <tbody class="align-middle"></tbody>
-</table>
+<!-- Area Chart -->
+<div class="card shadow mb-4">
+
+    <div class="card-header py-3">
+
+        <h6 class="m-0 font-weight-bold text-primary">Employee Table</h6>
+    </div>
+   
+    <div class="card-body">
+
+        <table class="table table-borderless" id="tableEmployee">
+            <div class="text-left mb-0">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#formModal"><i class="fa fa-plus"> Tambah</i></button>
+            </div>
+            <thead>
+                <tr class="font-weight-bold bg-dark" id="rowawal">
+                    <th>NIK</th>
+                    <th>Full Name</th>
+                    <th>Salary</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Option</th>
+                </tr>
+            </thead>
+            <tbody class="align-middle"></tbody>
+        </table>
+    </div>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
@@ -38,15 +51,15 @@
                 </button>
             </div>
 
-            <div class="modal-body needs-validation" novalidate>
-                <form class="is-invalid" id="inputForm" name="inputForm">
-                    <div class="form-row">
+            <div class="modal-body">
+                <form class="needs-validation" id="inputForm" name="inputForm" novalidate>
+                    <div class="form-group form-row">
                         <div class="col mb-3">
                             <label for="nik">NIK</label>
                             <input type="text" class="form-control" id="nik" name="nik" placeholder="NIK">
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="form-group row mb-3">
                         <div class="col">
                             <label for="firstName">Nama Depan</label>
                             <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First name">
@@ -56,7 +69,7 @@
                             <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Last name">
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="form-group row mb-3">
                         <div class="col">
                             <label for="phone">Phone Number</label>
                             <div class="input-group">
@@ -64,7 +77,7 @@
                                     <div class="input-group-text">+62</div>
                                 </div>
                                 <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number">
-                            </div>                          
+                            </div>
                         </div>
                         <div class="col">
                             <label for="salary">Gaji</label>
@@ -72,32 +85,31 @@
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">Rp.</div>
                                 </div>
-                                <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary">                               
+                                <input type="text" class="form-control" id="salary" name="salary" placeholder="Salary">
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="form-group row mb-3">
                         <div class="col">
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email" placeholder="Email">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="form-group row">
                         <div class="col">
                             <label for="birthDate">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="birthDate" name="birthDate" placeholder="Birth Date">
                         </div>
                         <div class="form-group mr-3">
                             <label for="gender">Gender</label>
-                            <select id="gender" class="custom-select" name="gender">
+                            <select class="form-control custom-select" id="gender" name="gender" required>
                                 <option value="">Choose...</option>
                                 <option value="0">Laki-Laki</option>
                                 <option value="1">Perempuan</option>
                             </select>
-                            <div class="invalid-feedback" id="group"></div>
                         </div>
                     </div>
-                    <div class="row mb-3">
+                    <div class="form-group row mb-3">
                         <div class="col">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" placeholder="Password">
@@ -105,8 +117,8 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="universiyId">Universitas</label>
-                        <select id="universiyId" class="custom-select" name="universityId">
-                            <option value"">Choose...</option>
+                        <select class="form-control custom-select" id="universiyId" name="universityId" required>
+                            <option value="">Choose...</option>
                             <option value="1005">Universitas Indonesia</option>
                             <option value="1006">Universitas Andalas</option>
                             <option value="1007">Universitas Trisakti</option>
@@ -114,11 +126,11 @@
                         </select>
                         <div class="invalid-feedback" id="group"></div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col">
+                    <div class="form-group row mb-3">
+                        <div class="col form-group">
                             <label for="degree">Gelar</label>
-                            <select id="degree" class="form-control" name="degree">
-                                <option selected>Gelar</option>
+                            <select class="form-control custom-select" id="degree" name="degree">
+                                <option value="">Gelar</option>
                                 <option value="Diploma I">Ahli Pratama</option>
                                 <option value="Diploma II">Ahli Muda</option>
                                 <option value="Diploma III">Ahli Madya</option>
@@ -127,7 +139,7 @@
                                 <option value="S2">Magister</option>
                                 <option value="S3">Doktor</option>
                             </select>
-                            <div class="" id="group"></div>
+                            <div class="invalid-feedback" id="group"></div>
                         </div>
                         <div class="col">
                             <label for="gpa">GPA</label>
@@ -139,10 +151,10 @@
                 <div class="modal-footer">
                     <button type="button" id="btnsubmit" class="btn btn-primary" onclick="Validate();">Submit</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
 </div>
 
- 
+
