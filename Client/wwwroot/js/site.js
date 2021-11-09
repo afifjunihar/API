@@ -430,8 +430,37 @@ var options = {
                 position: 'bottom'
             }
         }
-    }]
+    }],
+    noData: {
+        text: 'Loading...'
+    }
 };
 
-var chart = new ApexCharts(document.querySelector("#chart"), options);
+var chart = new ApexCharts(document.querySelector("#chart1"), options);
 chart.render();
+
+var options = {
+    chart: {
+        height: 350,
+        type: 'bar',
+    },
+    dataLabels: {
+        enabled: false
+    },
+    series: [],
+    labels: {
+        categories: ["Male", "Female"]
+    },
+    noData: {
+        text: 'Loading...'
+    }
+}
+
+var chart = new ApexCharts(document.querySelector("#chart2"), options);
+chart.render();
+var url = 'https://localhost:44319/API/employees/gender';
+$.getJSON(url, function (response) {
+    chart.updateSeries([{
+        data: response      
+    }])
+});

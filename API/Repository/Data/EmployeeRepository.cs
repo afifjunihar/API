@@ -314,5 +314,21 @@ namespace API.Repository.Data
             eContext.SaveChanges();
             return 0;
         }
+        public int CountMale()
+        {
+            var employeeData = eContext.Employees.ToList();
+            var genderMale = (from e in employeeData
+                              where e.Gender == Gender.Male
+                              select e.NIK).Count();
+            return genderMale;
+        }
+        public int CountFemale()
+        {
+            var employeeData = eContext.Employees.ToList();
+            var genderFemale = (from f in employeeData
+                                where f.Gender == Gender.Female
+                                select f.NIK).Count();
+            return genderFemale;
+        }
     }
 }

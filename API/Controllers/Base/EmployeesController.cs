@@ -276,6 +276,19 @@ namespace API.Controllers.Base
                 });
             }
         }
+
+        [Route("Gender")]
+        [HttpGet]
+        public ActionResult CountGender()
+        {
+            List<object> genderCount = new List<object>
+            {
+                new { x = "Female", y = employee.CountFemale() },
+                new { x = "Male", y = employee.CountMale() }
+            };
+            return Ok(genderCount);
+        }
+
     }
  }
 
