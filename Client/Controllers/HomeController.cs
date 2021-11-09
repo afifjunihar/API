@@ -27,6 +27,10 @@ namespace Client.Controllers
         {
             return View();
         }
+        public IActionResult Chart()
+        {
+            return View();
+        }
         public IActionResult DataTable()
         {
             return View();

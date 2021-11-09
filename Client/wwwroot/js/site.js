@@ -140,15 +140,31 @@ function ModalContent(url) {
         }
     })
 }
-
 //using datatables
 
 $(document).ready(function () {
     $("#employeeData").DataTable({
+        'responsive': true,
         'ajax': {
             'url': "https://localhost:44393/API/Employees",
             'dataSrc': 'result'
         },
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                name: 'excel',
+                title: 'Employee',
+                sheetName: 'Employee',
+                text: '',
+                className: 'buttonHide fa fa-download btn-default',
+                filename: 'Data',
+                autoFilter: true,
+                exportOptions: {
+                    columns: [0, 1, 2, 3]
+                }
+            }
+        ],
         'columns': [
             {
                 "data": "nik"
@@ -178,9 +194,10 @@ $(document).ready(function () {
             {
                 "data": "",
                 "render": function (data, type, row, meta) {
-                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegister" onclick="prefillEmployee('${row['nik']}')">Edit</button>
-                            <button type = "button" class="btn btn-circle btn-danger" onclick = "deleteEmployee('${row['nik']}')" > <i class="fas fa-trash"></i></button >`;
-                }
+                    return `<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRegister" onclick="prefillEmployee('${row['nik']}')" data-toggle="tooltip" data-placement="top" title="Hapus data karyawan dari database"><i class="fa fa-pencil-square-o"></i></button>
+                            <button type = "button" class="btn btn-circle btn-danger" onclick = "deleteEmployee('${row['nik']}')" data-toggle="tooltip" data-placement="top" title="Ubah data karyawan"> <i class="fas fa-trash"></i></button >`;
+                },
+                "orderable": false
             }
         ]
     });
@@ -227,6 +244,8 @@ $(document).ready(function () {
         errorPlacement: function (error, element) {
             if (element.attr("name") == "genderOptions") {
                 error.insertAfter("#gender");
+            } else if (element.attr("name") == "phone") {
+                error.insertAfter("#phone");
             } else {
                 error.insertAfter(element);
             }
@@ -434,3 +453,61 @@ function PutData() {
 
     //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
 }
+
+//chart
+$(document).ready(function () {
+    var options = {
+        chart: {
+            type: 'bar'
+        },
+        series: [{
+            name: 'sales',
+            data: [30, 40, 45, 50, 49, 60, 70, 91, 125]
+        }],
+        xaxis: {
+            categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+        }
+    }
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    chart.render();
+
+    var options = {
+        chart: {
+            height: 350,
+            type: 'bar',
+        },
+        dataLabels: {
+            enabled: false
+        },
+        series: [],
+        title: {
+            text: 'Ajax Example',
+        },
+        labels: {
+            categories: ["Male", "Female"]
+        },
+        noData: {
+            text: 'Loading...'
+        }
+    }
+
+    var chart = new ApexCharts(
+        document.querySelector("#chartGender"),
+        options
+    );
+
+    chart.render();
+
+    var url = 'https://localhost:44393/API/Employees/Gender';
+
+    $.getJSON(url, function (response) {
+        chart.updateSeries([{
+            name: 'Gender',
+            data: response.x
+        }])
+    });
+
+
+});

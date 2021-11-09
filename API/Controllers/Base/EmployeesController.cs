@@ -159,5 +159,16 @@ namespace API.Controllers.Base
             var result = employee.SignManager(role);
             return Ok(new { status = HttpStatusCode.OK, message = $"berhasil mengatur NIK {role.NIK} sebagai manager " });
         }
+
+        [Route("Gender")]
+        [HttpGet]
+        public ActionResult CountGender()
+        {
+            //int[] gender = { employee.CountFemale(), employee.CountMale() };
+            List<Int32> genderCount = new List<Int32>();
+            genderCount.Add(employee.CountMale());
+            genderCount.Add(employee.CountFemale());
+            return Ok(new { x = genderCount });
+        }
     }
 }
