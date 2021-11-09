@@ -18,7 +18,12 @@ $(document).ready(function () {
                 }
             }
         ],
-        //export option => untuk memilih yang mau di download apa aja
+        drawCallback: function ()
+        {
+            $('.buttonsToHide')[0]. style.visibility = 'hidden'
+
+            var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+        },
         'ajax': {
             'url':"https://localhost:44319/API/Employees",
             'dataSrc':'result'
@@ -68,14 +73,17 @@ $(document).ready(function () {
                 "data": "",
                 "render": function (data, type, row, meta) {
                     return `<button type="button" class="btn btn-warning" onclick="Edit('${row['nik']}');" data-toggle="modal" data-target="#formModal"><i class='fas fa-edit'></i></button>
-<button type="button" class="btn btn-danger" onclick="hapusPegawai('${row['nik']}');"><i class="fas fa-trash"></i></button>`
-
+                            <button type="button" class="btn btn-danger" onclick="hapusPegawai('${row['nik']}');"><i class="fas fa-trash"></i></button>`
                 }
             }
-        ]
+        ],
+        language: {
+            paginate: {
+                next: `<i class="fa fa-arrow-right">`,
+                previous: `<i class="fa fa-arrow-left">`
+            }
+        }
     });
-
-    table.buttons('.buttonsToHide').nodes().addClass('hidden');
 
     $("#inputForm").validate({
         // Specify validation rules
@@ -124,6 +132,11 @@ $(document).ready(function () {
         }
     }); 
 });
+
+function downloadExcel()
+{
+    $('#tableEmployee').DataTable().buttons().trigger();
+}
 
 function Validate() {
     var ini = $("#inputForm").valid();
@@ -196,7 +209,15 @@ function Insert() {
     });
 };
 
-function Edit(nik) {      
+function normalization()
+{
+    $("#exampleModalLongTitle").empty();
+    $("#exampleModalLongTitle").append("Registration");
+}
+
+function Edit(nik) {
+    $("#exampleModalLongTitle").empty();
+    $("#exampleModalLongTitle").append("Edit");
     $.ajax({
         url: `https://localhost:44319/API/Employees/${nik}`,
         headers: {
@@ -354,6 +375,24 @@ function alertGagal(pilih) {
 
 function hapusPegawai(nik)
 {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            hapus(nik);
+        }
+    })
+
+}
+
+function hapus(nik)
+{
     var obj = new Object();
     obj.nik = nik;
     $.ajax({
@@ -374,3 +413,25 @@ function hapusPegawai(nik)
 }
 
 
+var options = {
+    series: [44, 55, 13, 43, 22],
+    chart: {
+        width: 380,
+        type: 'pie',
+    },
+    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+    responsive: [{
+        breakpoint: 480,
+        options: {
+            chart: {
+                width: 200
+            },
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }]
+};
+
+var chart = new ApexCharts(document.querySelector("#chart"), options);
+chart.render();
