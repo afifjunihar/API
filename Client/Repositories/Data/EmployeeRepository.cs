@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using API.ViewModel;
 using Newtonsoft.Json;
+using System.Net;
+using System.Text;
 
 namespace Client.Repositories.Data
 {
@@ -48,6 +50,13 @@ namespace Client.Repositories.Data
                 entity = JsonConvert.DeserializeObject<ProfileVM>(apiResponse);
             }
             return entity;
+        }
+
+        public HttpStatusCode Register(RegisterVM entity)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
+            var result = httpClient.PostAsync(address.link + request + "Register/", content).Result;
+            return result.StatusCode;
         }
 
     }

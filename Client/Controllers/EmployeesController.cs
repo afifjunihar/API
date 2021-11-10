@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Client.Base.Controllers;
+using API.ViewModel;
 
 namespace Client.Controllers
 {
@@ -31,6 +32,12 @@ namespace Client.Controllers
         public async Task<JsonResult> Profile(string id)
         {
             var result = await employee.Profile(id);
+            return Json(result);
+        }
+
+        public JsonResult Register(RegisterVM entity)
+        {
+            var result = employee.Register(entity);
             return Json(result);
         }
     }
