@@ -23,14 +23,15 @@ namespace API.Controllers.Base
         public ActionResult<Entity> Get()
         {
             var result = repository.Get();
-            if (result.Count() == 0)
-            {
-                return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
-            }
-            else
-            {
-                return Ok(new { status = HttpStatusCode.OK, result, message = "Data ditemukan" });
-            }
+            //if (result.Count() == 0)
+            //{
+            //    return Ok(new { status = HttpStatusCode.NoContent, message = "Database tidak memiliki data alias kosong" });
+            //}
+            //else
+            //{
+            //    return Ok(new { status = HttpStatusCode.OK, result, message = "Data ditemukan" });
+            //}
+            return Ok(result) ;
         }
 
         [HttpPost]

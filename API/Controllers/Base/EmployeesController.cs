@@ -170,5 +170,13 @@ namespace API.Controllers.Base
             genderCount.Add(employee.CountFemale());
             return Ok(new { x = genderCount });
         }
+
+        [Route("Chart")]
+		[HttpGet]
+		public ActionResult Chart()
+		{
+			var result = employee.ByDegree();
+			return Ok(result);
+		}
     }
 }

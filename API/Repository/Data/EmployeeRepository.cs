@@ -332,5 +332,24 @@ namespace API.Repository.Data
                                 select f.NIK).Count();
             return genderFemale;
         }
+
+        public IEnumerable SalaryChart()
+        {
+            var employeeData = context.Employees.ToList();
+
+            return employeeData;
+        }
+
+        public IEnumerable ByDegree()
+		{
+			var degree = from edu in context.Educations
+							 group edu by edu.Degree into degreeChart
+							 select new
+							 {
+								 Degree = degreeChart.Key,
+								 Count = degreeChart.Count()
+							 };
+			return degree.ToList();
+		}
     }
 }
