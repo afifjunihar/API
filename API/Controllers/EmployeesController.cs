@@ -46,6 +46,7 @@ namespace EmployeeAPI.Controllers
 			return Ok("Berhasil Registrasi");
 		}
 
+		//[Authorize(Roles = "Direktur,Manager")]
 		[Route("Profile")]
 		[HttpGet]
 		public ActionResult GetProfile()
@@ -54,6 +55,7 @@ namespace EmployeeAPI.Controllers
 			return Ok(result);
 		}
 
+		[Authorize(Roles = "Direktur,Manager,Employee")]
 		[Route("Profile/{NIK}")]
 		[HttpGet]
 		public ActionResult GetProfile(string NIK)
@@ -64,7 +66,6 @@ namespace EmployeeAPI.Controllers
 
 		[Route("Login")]
 		[HttpPost]
-
 		public ActionResult Login(LoginVM loginVM)
 		{
 			var result = employee.Login(loginVM);
@@ -96,7 +97,7 @@ namespace EmployeeAPI.Controllers
 					_configuration["Jwt:Issuer"],
 					_configuration["Jwt:Audience"],
 					claims,
-					expires : DateTime.UtcNow.AddMinutes(10),
+					expires : DateTime.UtcNow.AddMinutes(60),
 					signingCredentials : signIn
 				);
 			var idToken = new JwtSecurityTokenHandler().WriteToken(token);
@@ -104,12 +105,21 @@ namespace EmployeeAPI.Controllers
 			return Ok(new { status = HttpStatusCode.OK, idToken, message = "Login Sukses" });
 		}
 
-		[Authorize(Roles = "Employee")]
-		[Route("TestJWT")]
-		[HttpGet]
-		public ActionResult TestJWT()
+		[Authorize(Roles = "Direktur")]
+		[Route("SignManager")]
+		[HttpPost]
+		public ActionResult SignManager(AccountRole accountRole)
 		{
-			return Ok("Test JWT");
+			var result = employee.SignManager(accountRole);
+			return Ok("Berhasil Menambahkan Manager");
+		}
+
+		[Route("Chart")]
+		[HttpGet]
+		public ActionResult Chart()
+		{
+			var result = employee.ByDegree();
+			return Ok(result);
 		}
 	}
 }

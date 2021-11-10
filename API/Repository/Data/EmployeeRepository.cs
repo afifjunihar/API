@@ -138,7 +138,7 @@ namespace EmployeeAPI.Repository.Data
 			return 1;
 		}
 		
-		public string[] GetRole(LoginVM loginVM)
+		public string[] GetRole(LoginVM loginVM) // Get Roles User
 		{
 			var dataExist = eContext.Employees.Where(fn => fn.Email == loginVM.Email).FirstOrDefault();
 			var userNIK = dataExist.NIK;
@@ -151,5 +151,30 @@ namespace EmployeeAPI.Repository.Data
 
 			return result.ToArray();
 		}
+
+		public int SignManager(AccountRole accountRole)
+		{
+			var addManager = new AccountRole
+			{
+				NIK = accountRole.NIK,
+				Role_Id = 2
+			};
+			eContext.AccountRoles.Add(addManager);
+			var result = eContext.SaveChanges();
+			return result;
+		}
+
+		public IEnumerable ByDegree()
+		{
+			var degree = from edu in eContext.Educations
+							 group edu by edu.Degree into degreeChart
+							 select new
+							 {
+								 Degree = degreeChart.Key,
+								 Count = degreeChart.Count()
+							 };
+			return degree.ToList();
+		}
+
 	}
 }
