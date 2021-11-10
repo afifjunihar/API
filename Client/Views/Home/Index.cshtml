@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+*@
+<div class="container" style="margin-top:100px">
+    <h1 class="text-uppercase font-weight-light">Grid System</h1>
+    <div class="row">
+        <div class="col-6">
+            <div class="row" id="a" style="background-color:lightpink; height:75px">
+                <p>Vel sapien elit in malesuada semper mi, id sollicitudin.</p>
+            </div>
+            <div class="row" id="b" style="background-color:coral; height:75px">
+                <p>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</p>
+                <p>Ut fusce varius nisl ac ipsum gravida vel pretium tellus.</p>
+            </div>
+        </div>
+        <div class="col-6" id="c" style="background-color:skyblue; height:150px">
+            <p>Tincidunt integer eu augue augue nunc elit dolor, luctus placerat scelerisque euismod, iaculis eu lacus nunc mi elit, vehicula ut laoreet ac, aliquam sit amet justo nunc tempor, metus vel.</p>
+            <p>Sapien elit in malesuada semper mi, id sollicitudin urna fermentum.</p>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container" style="margin-top:50px">
+    <div class="row">
+        <div class="col-6">
+            <div class="d-grid gap-2 d-md-block">
+                <button class="btn btn-success" type="button" id="b1">Button Alert</button>
+                <button class="btn btn-primary" type="button" id="b2">Ubah Grid</button>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="row" style="display:block">
+                <p>Click the button to display the time.</p>
+
+                <button class="btn btn-secondary" onclick="getElementById('demo').innerHTML=Date()">What is the time?</button>
+                <br />
+                <p id="demo"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+<div class="container">
+    <h1>Star Wars People</h1>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Nama</th>
+                <th scope="col">Height</th>
+                <th scope="col">Hair Color</th>
+                <th scope="col">Skin Color</th>
+                <th scope="col">Birth Year</th>
+            </tr>
+        </thead>
+        <tbody id="tableStar">
+            
+        </tbody>
+    </table>
+
+</div>

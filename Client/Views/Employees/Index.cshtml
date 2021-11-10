@@ -1,0 +1,41 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Employee";
+    Layout = "_LayoutNew";
+}
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h2 class="h3 mb-2 text-gray-800">Daftar Employee</h2>
+</div>
+<div class="card shadow mb-4">
+    <div class="card-header">
+       @* <button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Register Employee" onclick="registerButton()"><i class="fas fa-user-plus"></i></button>
+        <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Export Excel" onclick="exportExcel()"><i class="far fa-file-excel"></i></button>*@
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table id="dataTable1" class="table table-active border" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Phone</th>
+                        <th>Birth Date</th>
+                        <th>Salary</th>
+                        <th>Email</th>
+                        <th>Gender</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+@section scripts{ 
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+    <script src="~/js/employee.js" asp-append-version="true"></script>
+
+}

@@ -51,7 +51,7 @@ namespace API.Controllers
             
         }
 
-        [Authorize(Roles = "Director, Manager")]
+        /*[Authorize(Roles = "Director, Manager")]*/
         [HttpGet("Profile")]
         public ActionResult GetProfile()
         {
@@ -63,18 +63,18 @@ namespace API.Controllers
             else
             {
                 var result = employee.GetProfile();
-                return Ok(new { status = HttpStatusCode.OK, result, message = "Berhasil menampilkan data register" });
+                return Ok(result);
             }
         }
 
-        [Authorize(Roles = "Employee")]
+        /*[Authorize(Roles = "Employee")]*/
         [HttpGet("Profile/{NIK}")]
         public ActionResult GetProfile(string NIK)
         {
             try
             {
                 var result = employee.GetProfile(NIK);
-                return Ok(new { status = HttpStatusCode.OK, result, message = $"Berhasil menampilkan data register dengan NIK : {NIK}" });
+                return Ok(result);
             }
             catch (InvalidOperationException)
             {
