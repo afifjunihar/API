@@ -239,12 +239,8 @@ function insertData() {
     console.log(obj);
     $.ajax({
         url: "Employees/Register",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
         type: "POST",
-        data: obj,
+        data: {entity: obj},
         dataType: 'json'
     }).done((result) => {
         Swal.fire(
