@@ -16,14 +16,14 @@ namespace Client.Repositories
     public class GeneralRepository<TEntity, TId> : IRepository<TEntity, TId>
         where TEntity : class
     {
-        private readonly Address address;
+        private readonly Address Address;
         private readonly string request;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly HttpClient httpClient;
 
         public GeneralRepository(Address address, string request)
         {
-            this.address = address;
+            this.Address = address;
             this.request = request;
             _contextAccessor = new HttpContextAccessor();
             httpClient = new HttpClient
@@ -73,7 +73,7 @@ namespace Client.Repositories
         public HttpStatusCode Post(TEntity entity)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(entity), Encoding.UTF8, "application/json");
-            var result = httpClient.PostAsync(address.link + request, content).Result;
+            var result = httpClient.PostAsync(Address.link + request, content).Result;
             return result.StatusCode;
         }
     }

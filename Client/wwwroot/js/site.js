@@ -142,12 +142,22 @@ function ModalContent(url) {
 }
 //using datatables
 
+// Create our number formatter.
+var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'IDR',
+  
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+  
 $(document).ready(function () {
     $("#employeeData").DataTable({
         'responsive': true,
         'ajax': {
             'url': "https://localhost:44393/API/Employees",
-            'dataSrc': 'result'
+            'dataSrc': ''
         },
         dom: 'Bfrtip',
         buttons: [
@@ -189,7 +199,10 @@ $(document).ready(function () {
                 }
             },
             {
-                "data": "salary"
+                "data": "",
+                "render": function(data,type, row, meta) {
+                    return formatter.format(row['salary'])
+                }
             },
             {
                 "data": "",
@@ -278,17 +291,17 @@ function InsertData() {
     obj.Degree = $("#inputDegree").val();
     obj.GPA = $("#inputGPA").val();
     obj.UniversityId = Number($("#inputUniversity").val());
-    obj.Gender = $('input[name="genderOptions"]').val();
+    obj.Gender = $('input[name="genderOptions"]:checked').val();
     console.log(obj);
 
     $.ajax({
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        'url': "https://localhost:44393/API/Employees/Register/",
+        // headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json'
+        // },
+        'url': "/Employees/Register",
         'type': "POST",
-        'data': JSON.stringify(obj),
+        'data': {entity:obj},
         'dataType': 'json'
     }).done((result) => {
         Swal.fire(
@@ -454,3 +467,33 @@ function PutData() {
     //isi dari object kalian buat sesuai dengan bentuk object yang akan di post
 }
 
+
+////login
+//function Login() {
+//    var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
+//    //ini ngambil value dari tiap inputan di form nya
+//    obj.Email = $("#loginEmail").val();
+//    obj.Password = $("#loginPassword").val();
+//    $.ajax({
+//        //headers: {
+//        //    'Accept': 'application/json',
+//        //    'Content-Type': 'application/json'
+//        //},
+//        'url': "/Employees/Auth",
+//        'type': "POST",
+//        'data': { login: obj },
+//        'dataType': 'json'
+//    }).done((result) => {
+//        Swal.fire(
+//            'Success',
+//            'Edit brhasil',
+//            'success'
+//        );
+//    }).fail((error) => {
+//        Swal.fire(
+//            'Error',
+//            'terjadi kesalahan',
+//            'error'
+//        );
+//    })
+//}

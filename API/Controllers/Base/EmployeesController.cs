@@ -86,7 +86,7 @@ namespace API.Controllers.Base
             return Ok(employee.GetProfile());
         }
 
-        //[Authorize(Roles = "Employee, Manager, Director")]
+        [Authorize(Roles = "Employee, Manager, Director")]
         [Route("Profile/{nik}")]
         [HttpGet]
         public ActionResult GetProfileInfo(string nik)
@@ -101,11 +101,11 @@ namespace API.Controllers.Base
             var result = employee.Login(loginVM);
             if (result == 1)
             {
-                return NotFound("Email Belum Terdaftar");
+                return NotFound(new { messages = "Email Belum Terdaftar"});
             }
             else if (result == 2)
             {
-                return BadRequest("Password Salah");
+                return BadRequest(new { password = "Password Salah" });
             }
             // Implement JWT
             var data = new LoginDataVM
@@ -133,7 +133,12 @@ namespace API.Controllers.Base
                 );
             var idToken = new JwtSecurityTokenHandler().WriteToken(token);
             claims.Add(new Claim("TokenSecurity", idToken.ToString()));
-            return Ok(new { status = HttpStatusCode.OK, idToken, message = "Login Sukses" });
+            var JWToken = new JWTokenVM
+            {
+                Messages = "Login sukses",
+                Token = idToken
+            };
+            return Ok(JWToken);
         }
 
         [HttpGet]
