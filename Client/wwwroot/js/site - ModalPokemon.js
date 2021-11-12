@@ -27,7 +27,7 @@
 $.ajax({
     url: "https://pokeapi.co/api/v2/pokemon/",
     success: function (result) {
-        console.log(result.results);
+       
         var listpokemon = "";
         $.each(result.results, function(key, val) {
             listpokemon += `<tr>

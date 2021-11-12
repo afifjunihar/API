@@ -1,5 +1,6 @@
 ﻿
 using API.Models;
+using API.ViewModels;
 using API.Repository;
 using API.Repository.Data;
 using API.ViewModels;
@@ -18,14 +19,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers.Base
 {
-    //public class DetailsViewModel
-    //{
-    //    public Employee Employee { get; set; }
-    //    public Account Account { get; set; }
-    //    public Profiling Profiling { get; set; }
-    //    public Education Education { get; set; }
-    //    public University University { get; set; }
-    //}
+
    
     public class EmployeesController : BaseController<Employee, EmployeeRepository, string>
     {
@@ -114,7 +108,7 @@ namespace API.Controllers.Base
 
         [HttpGet]
         [Route("Registration/Profile")]
-        [Authorize(Roles = "Manajer,Director")]
+       // [Authorize(Roles = "Manajer,Director")]
         public ActionResult<Employee> GetProfile() 
         {
             try
@@ -141,7 +135,7 @@ namespace API.Controllers.Base
             try
             {
                 var result = employee.GetProfile(NIK);
-                return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result });
+                return Ok( result);
    
             }
             catch (Exception)
@@ -163,7 +157,7 @@ namespace API.Controllers.Base
             if (checkLogin == 0)
             {
 
-                var getUserRole= employee.GetUserData(login);
+                var getUserRole = employee.GetUserData(login);
                 var getFullName = employee.GetFullName(login);
 
                 var data = new LoginDataVM
@@ -174,10 +168,10 @@ namespace API.Controllers.Base
 
                 var claims = new List<Claim>
                 {
-                    new Claim("email", login.Email)         
+                    new Claim("email", login.Email)
                 };
 
-                foreach (var x in data.Roles) 
+                foreach (var x in data.Roles)
                 {
                     claims.Add(new Claim("roles", x.ToString()));
                 }
@@ -192,32 +186,37 @@ namespace API.Controllers.Base
                         signingCredentials: signIn
                     );
                 var idToken = new JwtSecurityTokenHandler().WriteToken(token);
-                claims.Add(new Claim("TokenSecurity", idToken.ToString()));            
-                return Ok(new { status = HttpStatusCode.OK, message = $"Login Berhasil !", greetings = $"Selamat Datang {getFullName}", idToken });
+                claims.Add(new Claim("TokenSecurity", idToken.ToString()));
+                return Ok(new JWTokenVM { message = $"Login Berhasil !", Token = idToken });
             }
-            else if (checkLogin == 1)
+
+            //else if (checkLogin == 1)
+            //{
+            //    return BadRequest(new
+            //    {
+            //        status = HttpStatusCode.BadRequest,
+            //        message = "Email yang Anda Masukan Tidak Terdaftar"
+            //    });
+            //}
+            //else if (checkLogin == 2)
+            //{
+            //    return BadRequest(new
+            //    {
+            //        status = HttpStatusCode.BadRequest,
+            //        message = "Password yang Anda Masukan Salah"
+            //    });
+            //}
+            //else 
+            //{
+            //    return NotFound(new
+            //    {
+            //        status = HttpStatusCode.NotFound,
+            //        message = "Terjadi Error mohon chek line 120 EmployeesRepository"
+            //    });
+            //}
+            else
             {
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.BadRequest,
-                    message = "Email yang Anda Masukan Tidak Terdaftar"
-                });
-            }
-            else if (checkLogin == 2)
-            {
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.BadRequest,
-                    message = "Password yang Anda Masukan Salah"
-                });
-            }
-            else 
-            {
-                return NotFound(new
-                {
-                    status = HttpStatusCode.NotFound,
-                    message = "Terjadi Error mohon chek line 120 EmployeesRepository"
-                });
+                return BadRequest(new JWTokenVM { message = $"Login ggl !", Token = null });
             }
         }
 
@@ -277,17 +276,40 @@ namespace API.Controllers.Base
             }
         }
 
-        [Route("Gender")]
+        [Route("ChartGender")]
         [HttpGet]
         public ActionResult CountGender()
         {
             List<object> genderCount = new List<object>
             {
-                new { x = "Female", y = employee.CountFemale() },
-                new { x = "Male", y = employee.CountMale() }
+                new { Gender = "Female", Count = employee.CountFemale() },
+                new { Gender = "Male", Count = employee.CountMale() }
             };
             return Ok(genderCount);
         }
+
+
+        [Route("ChartDegree")]
+        [HttpGet]
+        public ActionResult Chart()
+        {
+            var result = employee.ByDegree();
+            return Ok(result);
+        }
+
+        [Route("ChartSalary")]
+        [HttpGet]
+        public ActionResult ChartSalary()
+        {
+            List<object> CountSalary = new List<object>
+            {
+                new { Range = "< 5000000", count = employee.CheckSalary()[0]},
+                new { Range = "5000000 - 10000000", count = employee.CheckSalary()[1] },
+                new { Range = "> 10000000", count = employee.CheckSalary()[2] }
+            };
+            return Ok(CountSalary);
+        }
+
 
     }
  }

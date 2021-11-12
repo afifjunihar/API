@@ -23,8 +23,7 @@ namespace API.Controllers.Base
         [HttpGet]
         public ActionResult<Entity> Get()
         {
-            try
-            {
+            
                 var result = repository.Get();
                 if (result.Count() == 0)
                 {
@@ -32,17 +31,9 @@ namespace API.Controllers.Base
                 }
                 else
                 {
-                    return Ok(new { status = HttpStatusCode.OK, message = $"Sebanyak {result.Count()} Data Ditemukan", result });
+                    return Ok(result);
                 }
-            }
-            catch (Exception)
-            {
-                return BadRequest(new
-                {
-                    status = HttpStatusCode.BadRequest,
-                    message = "Gagal Mendapat Data, Error terjadi"
-                });
-            }
+       
         }
 
         [HttpPost]
@@ -72,7 +63,7 @@ namespace API.Controllers.Base
             try
             {
                 var result = repository.Get(Key);
-                return Ok(new { status = HttpStatusCode.OK, message = "Data Berhasil Ditemukan", result});
+                return Ok(result);
             }
             catch (System.ArgumentNullException)
             {

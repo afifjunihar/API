@@ -147,10 +147,11 @@ namespace API.Repository.Data
                     NIK = entity.NIK,
                     RoleId = entity.RoleId
                 };
-                eContext.AccountRoles.Add(empRole);
 
+                eContext.AccountRoles.Add(empRole);
                 eContext.Employees.Add(employee);
                 var result = eContext.SaveChanges();
+
                 return result;
             }
         }
@@ -329,6 +330,30 @@ namespace API.Repository.Data
                                 where f.Gender == Gender.Female
                                 select f.NIK).Count();
             return genderFemale;
+        }
+
+        public IEnumerable ByDegree()
+        {
+            var degree = from edu in eContext.Educations
+                         group edu by edu.Degree into degreeChart
+                         select new
+                         {
+                             Degree = degreeChart.Key,
+                             Count = degreeChart.Count()
+                         };
+            return degree.ToList();
+        }
+
+        public int[] CheckSalary()
+        {
+            var data = eContext.Employees.Where(x => x.Salary < 5000000).Count();
+            var data1 = eContext.Employees.Where(x => x.Salary >= 5000000 && x.Salary <= 10000000).Count();
+            var data2 = eContext.Employees.Where(x => x.Salary > 10000000).Count();
+            List<int> result = new List<int>();
+            result.Add(data);
+            result.Add(data1);
+            result.Add(data2);
+            return result.ToArray();
         }
     }
 }

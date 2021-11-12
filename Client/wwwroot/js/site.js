@@ -20,13 +20,13 @@ $(document).ready(function () {
         ],
         drawCallback: function ()
         {
-            $('.buttonsToHide')[0]. style.visibility = 'hidden'
-
+            $('.buttonsToHide')[0].style.visibility = 'hidden'
             var hasRows = this.api().rows({ filter: 'applied' }).data().length > 0;
+            if (hasRows) { document.getElementById("tableEmployee").style.visibility = "disable";}
         },
         'ajax': {
-            'url':"https://localhost:44319/API/Employees",
-            'dataSrc':'result'
+            'url':"/Employees/GetEmployeeAll",
+            'dataSrc':''
         },
         'columnDefs': [
             { "className": "dt-center", "targets": "_all", "orderable": false }
@@ -85,8 +85,41 @@ $(document).ready(function () {
         }
     });
 
+    $.validator.addMethod("strong_password",
+        function (value, element)
+    {
+        let password = value;
+        if (!(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%&*!])(.{8,20}$)/.test(password)))
+        {
+            return false;
+        }
+        return true;
+    },
+
+        function (value, element)
+    {
+        let password = $(element).val();
+        var n = $(element).attr("name");
+        if (!(/^(.{8,20}$)/.test(password))) {
+            return "Password must between 8-20 characters long.";
+        }
+        else if (!(/^(?=.*[A-Z])/.test(password))) {
+            return "Password must contain atleast one uppercase.";
+        }
+        else if (!(/^(?=.*[a-z])/.test(password))) {
+            return  "Password must contain atleast one lowercase.";
+        }
+        else if (!(/^(?=.*[0-9])/.test(password))) {
+            return "Password must contain atleast one digit.";
+        }
+        else if (!(/^(?=.*[@#$%&*!])/.test(password))) {
+            return "Password must contain atleast one special character @#$%&*!.";
+        }
+        return false;
+    });
+
     $("#inputForm").validate({
-        // Specify validation rules
+
         rules: {
             nik: "required",
             firstName: "required",
@@ -104,16 +137,21 @@ $(document).ready(function () {
             },
             password: {
                 required: true,
-                minlength: 5
+                strong_password: true
             }
+        },
+        messages: {
+            password: {
+                required: "Please provide a password",
+                strong_password: "asu masukin password aja gabisa"
+            }       
         },
         errorPlacement: function (error, element) {
         },
         highlight: function (element) {
             $(element).closest('.form-control').addClass('is-invalid');
-            $(element).closest('.form-group').addClass('is-invalid');
+            $(element).closest('.form-group').addClass('is-invalid');      
 
-            $(element).closest('#group').addClass('invalid-feedback');
             var n = $(element).attr("name");
             if (n === "nik") { $(element).attr("placeholder", "Please enter your NIK"); }
             if (n === "firstName") { $(element).attr("placeholder", "Please enter your First Name"); }
@@ -122,14 +160,15 @@ $(document).ready(function () {
             if (n === "salary") { $(element).attr("placeholder", "Please enter your Salary"); }
             if (n === "gpa") { $(element).attr("placeholder", "Please enter your Gpa"); }
             if (n === "degree") { $(element).attr("placeholder", "Please provide your Degree"); }
-            if (n === "password") { $(element).attr("placeholder", "Please provide a password"); }
+          /*  if (n === "password") { $(element).attr("placeholder", "Please provide a password"); }*/
             if (n === "email") { $(element).attr("placeholder", "Please enter a valid email address"); }
          },
         unhighlight: function (element) {
             $(element).closest('.form-control').removeClass('is-invalid');
             $(element).closest('.form-group').removeClass('is-invalid');
-            $(element).closest('#group').removeClass('invalid-feedback');
+        
         }
+
     }); 
 });
 
@@ -143,30 +182,22 @@ function Validate() {
     console.log(ini);
 
     if (ini === true) {
-        get();
+        cekEdit();
     }
     else {
         alertGagal(0);
     }
 };
 
-function get()
-{
-    var NIK = $("#nik").val();
-    $.ajax({
-        url: `https://localhost:44319/API/Employees/${NIK}`,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        type: 'GET'
-    }).done((result) => {
-        pilihUpdate(true);
-    }).fail((error) => {
-        pilihUpdate(false);
-    });
-}
+function cekEdit() {
+    var cek = $("#edit").val();
+    if (cek === "true"  ) {
+        Update();
+    }
+    else { Insert(); }
+        
 
+}
 function pilihUpdate(bool) {
     if (bool == true) {
         Update();
@@ -192,19 +223,27 @@ function Insert() {
     obj.UniversityId = $("#universiyId").val();
     console.log(obj);
     $.ajax({
-        url: "https://localhost:44319/API/Employees/Registration",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        url: "/Employees/Register",
+        //headers: {
+        //    'Accept': 'application/json',
+        //    'Content-Type': 'application/json'
+        //},
         type: 'POST',
-        data: JSON.stringify(obj)
-
+        data: {entity: obj},
+        dataType: 'JSON'
     }).done((result) => {
-        alertBerhasil(1);
-        $('#tableEmployee').DataTable().ajax.reload();
-
+        console.log(result);
+        if (result === 200) {
+            alertBerhasil(1);
+            $('#tableEmployee').DataTable().ajax.reload();
+            $('#formModal').modal('toggle');
+        }
+        else {
+            console.log(result);
+            alertGagal(1);
+        }
     }).fail((error) => {
+        console.log(error);
         alertGagal(1);
     });
 };
@@ -213,44 +252,64 @@ function normalization()
 {
     $("#exampleModalLongTitle").empty();
     $("#exampleModalLongTitle").append("Registration");
+    $("#nik").attr("disabled", false);
+
+    $("#edit").val("");
+    $("#nik").val("");
+    $("#firstName").val("");
+    $("#lastName").val("");
+    $("#phone").val("");
+    $("#salary").val("");
+    $("#email").val("");  
+    $("#birthDate").val("");
+    $("#gender").val("");
+    $("#password").val("");
+    $("#universiyId").val("");
+    $("#degree").val("");
+    $("#gpa").val("");
 }
 
 function Edit(nik) {
     $("#exampleModalLongTitle").empty();
-    $("#exampleModalLongTitle").append("Edit");
+    $("#exampleModalLongTitle").append("Edit");  
+    $("#nik").attr("disabled", true);
+    $("#edit").val(true);
+   
+
     $.ajax({
-        url: `https://localhost:44319/API/Employees/${nik}`,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        url: `/employees/getemployee/${nik}`,
+        //headers: {
+        //    'Accept': 'application/json',
+        //    'Content-Type': 'application/json'
+        //},
         type: 'GET',
         success: function (data) {
-            var gender = pilihOption(`${data.result.gender}`);
+            console.log(data);
+            var gender = pilihOption(`${data.gender}`);
             console.log(gender);
-            $("#nik").val(`${data.result.nik}`);
-            $("#firstName").val(`${data.result.firstName}`);
-            $("#lastName").val(`${data.result.lastName}`);
-            $("#phone").val(`${data.result.phone}`);
-            $("#salary").val(`${data.result.salary}`);
-            $("#email").val(`${data.result.email}`);
+            $("#nik").val(`${data.nik}`);
+            $("#firstName").val(`${data.firstName}`);
+            $("#lastName").val(`${data.lastName}`);
+            $("#phone").val(`${data.phone}`);
+            $("#salary").val(`${data.salary}`);
+            $("#email").val(`${data.email}`);
             $("#gender").val(gender);
+
         }
     });
     $.ajax({
-        url: `https://localhost:44319/API/Employees/Registration/Profile/${nik}`,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        url: `/employees/getprofile/${nik}`,
+        //headers: {
+        //    'Accept': 'application/json',
+        //    'Content-Type': 'application/json'
+        //},
         type: 'GET',
         success: function (data) {
-            var universityId = pilihOption(`${data.result.name}`);
+            var universityId = pilihOption(`${data.name}`);
             console.log(universityId);
             $("#universiyId").val(universityId);
-            $("#degree").val(`${data.result.degree}`);
-            $("#gpa").val(`${data.result.gpa}`);
-           
+            $("#degree").val(`${data.degree}`);
+            $("#gpa").val(`${data.gpa}`);           
         }          
     });
 }
@@ -279,6 +338,29 @@ function pilihOption(option) {
     }
 }
 
+function Login() {
+    var obj = new Object();
+    obj.email = $('#namelogin').val();
+    obj.password = $('#passwordlogin').val();
+    console.log("==cek data==");
+    console.log(obj);
+    $.ajax({
+        url: "/Logins/SignIn",
+        type: 'POST',
+        data: { entity: obj },
+        dataType: 'JSON'
+    }).done((result) => {
+        console.log('==data result==');
+        console.log(result);
+        alertBerhasil(2);
+
+    }).fail((error) => {
+        console.log('==data error==');
+        console.log(error);
+
+    });
+}
+
 function Update() {
     var obj = new Object(); //sesuaikan sendiri nama objectnya dan beserta isinya
     //ini ngambil value dari tiap inputan di form nya
@@ -297,18 +379,17 @@ function Update() {
     console.log(obj);
 
     $.ajax({
-        url: "https://localhost:44319/API/Employees/Update",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        url: "/Employees/Update",
         type: 'PUT',
-        data: JSON.stringify(obj)
+        data: { entity: obj },
+        dataType: 'JSON'
     }).done((result) => {
+        console.log(result);
         alertBerhasil(2);
         $('#tableEmployee').DataTable().ajax.reload();
-
+        obj.Degree = $("#edit").val("");
     }).fail((error) => {
+        console.log(error);
         alertGagal(2);
     });
 };
@@ -396,13 +477,8 @@ function hapus(nik)
     var obj = new Object();
     obj.nik = nik;
     $.ajax({
-        url: `https://localhost:44319/API/Employees/Delete/${nik}`,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
+        url: `/Employees/Delete/${nik}`,
         type: 'DELETE',
-        data: JSON.stringify(obj)
     }).done((result) => {
         alertBerhasil(3);
         $('#tableEmployee').DataTable().ajax.reload();
@@ -413,54 +489,95 @@ function hapus(nik)
 }
 
 
-var options = {
-    series: [44, 55, 13, 43, 22],
-    chart: {
-        width: 380,
-        type: 'pie',
-    },
-    labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-    responsive: [{
-        breakpoint: 480,
-        options: {
-            chart: {
-                width: 200
-            },
-            legend: {
-                position: 'bottom'
-            }
-        }
-    }],
-    noData: {
-        text: 'Loading...'
-    }
-};
 
-var chart = new ApexCharts(document.querySelector("#chart1"), options);
-chart.render();
+const seriesgender = [];
+const labelgender = [];
 
-var options = {
+var url = '/Employees/ChartGender';
+$.getJSON(url, function (response) {
+    $.each(response, function (index, value) {
+        seriesgender.push(value.count);
+        labelgender.push(value.gender);
+    })
+    
+});
+
+// ApexChart
+var chartgender = {
     chart: {
         height: 350,
-        type: 'bar',
+        type: 'donut'
     },
-    dataLabels: {
-        enabled: false
-    },
-    series: [],
-    labels: {
-        categories: ["Male", "Female"]
-    },
-    noData: {
-        text: 'Loading...'
+    series: seriesgender,
+    labels: labelgender,
+    legend: {
+        position: 'bottom'
     }
 }
 
-var chart = new ApexCharts(document.querySelector("#chart2"), options);
+
+var chart = new ApexCharts(document.querySelector("#chart2"), chartgender);
 chart.render();
-var url = 'https://localhost:44319/API/employees/gender';
-$.getJSON(url, function (response) {
-    chart.updateSeries([{
-        data: response      
-    }])
-});
+
+
+
+const dataSeries = [];
+const dataLabel = [];
+
+var dataProp = $.ajax({
+    type: 'GET',
+    url: '/Employees/ChartDegree',
+    success: function (data) {
+        $.each(data, function (index, value) {
+            dataSeries.push(value.count);
+            dataLabel.push(value.degree);
+        })
+    }
+})
+
+// ApexChart
+var chartDegree = {
+    chart: {
+        height: 350,
+        type: 'pie'
+    },
+    series: dataSeries,
+    labels: dataLabel,
+    legend: {
+        position: 'bottom'
+    }
+}
+
+var x = new ApexCharts(document.querySelector("#chart1"), chartDegree);
+x.render();
+
+
+const seriesSalary = [];
+const labelsalary = [];
+
+var dataProp = $.ajax({
+    type: 'GET',
+    url: '/Employees/ChartSalary',
+    success: function (data) {
+        $.each(data, function (index, value) {
+            seriesSalary.push(value.count);
+            labelsalary.push(value.range);
+        })
+    }
+})
+
+var chartSalary = {
+    chart: {
+        height: 350,
+        type: 'pie'
+    },
+    series: seriesSalary,
+    labels: labelsalary,
+    legend: {
+        position: 'bottom'
+    }
+}
+
+var x = new ApexCharts(document.querySelector("#chart3"), chartSalary);
+x.render();
+
